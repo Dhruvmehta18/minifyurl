@@ -18,11 +18,9 @@ const getUrls = catchAsync(async (req, res) => {
 });
 
 const getUrl = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(req.params.userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-  }
-  res.send(user);
+  console.log(req.params.minify_id);
+  res.header('location', 'https://www.google.com')
+  res.status(httpStatus.PERMANENT_REDIRECT).send({});
 });
 
 const updateUrl = catchAsync(async (req, res) => {
