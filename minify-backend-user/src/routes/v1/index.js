@@ -2,6 +2,7 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
+const hashRoute = require('./hash.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -16,8 +17,8 @@ const defaultRoutes = [
     route: userRoute,
   },
   {
-    path: ':hash',
-    route: 
+    path: '/hash',
+    route: hashRoute
   }
 ];
 
