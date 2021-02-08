@@ -1,6 +1,26 @@
 version: '3'
 
 services:
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+    networks:
+      - dynamodb-network
+
   node-app:
-    container_name: node-app-dev
+    depends_on:
+        - dynamodb-local
+    container_name: minify-url-dev-nodejs-backend
+    networks:
+      - dynamodb-network
     command: yarn dev -L
+
+networks:
+  dynamodb-network:
+    driver: bridge

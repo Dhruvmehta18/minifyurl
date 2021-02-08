@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
+const MinifyUrl = require('./models/minifyUrl.model');
+const ApiError = require('./utils/ApiError');
 
 let server;
 
@@ -12,8 +14,15 @@ let server;
 //   });
 // });
 
-server = app.listen(config.port, () => {
+server = app.listen(config.port, async () => {
   logger.info(`Listening to port ${config.port}`);
+
+  if (config.env === 'development') {
+    const data = await MinifyUrl.createTable();
+    if (!data) {
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Some error happen on our side');
+    }
+  }
 });
 
 const exitHandler = () => {

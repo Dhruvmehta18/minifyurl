@@ -17,10 +17,9 @@ const getUrls = catchAsync(async (req, res) => {
   res.send(result);
 });
 
-const getUrl = catchAsync(async (req, res) => {
-  console.log(req.params.minify_id);
-  res.header('location', 'https://www.google.com')
-  res.status(httpStatus.PERMANENT_REDIRECT).send({});
+const getUrl = catchAsync(async (req, res) => {    
+  res.header('location', 'https://www.google.com');
+  res.status(httpStatus.MOVED_PERMANENTLY).send({});
 });
 
 const updateUrl = catchAsync(async (req, res) => {
