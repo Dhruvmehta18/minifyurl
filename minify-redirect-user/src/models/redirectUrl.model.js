@@ -15,24 +15,26 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
 var table = aws.dynamodb.URL_TABLE.TableName;
 
-const getOriginalUrl = async (minify_id = "") => {
+const getOriginalUrl = async (minify_id = '') => {
   var params = {
     TableName: table,
     Key: {
       hash: minify_id,
     },
+    AttributesToGet: ['originalLink', 'expirationTime'],
   };
   try {
-      const data = await docClient.get(params).promise();
-      logger.debug(JSON.stringify(data));
-      return data;
+    const data = await docClient.get(params).promise();
+    logger.debug(JSON.stringify(data));
+    return data;
   } catch (error) {
-      throw error;
+    throw error;
+    //TODO 1 : fix error controlling mechanism
   }
 };
 
 const RedirectUrl = {
-  getOriginalUrl
+  getOriginalUrl,
 };
 
 module.exports = RedirectUrl;
