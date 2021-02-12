@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -13,6 +14,8 @@ const ApiError = require('./utils/ApiError');
 const hashRoute = require('./routes/v1/hash.route');
 
 const app = express();
+
+const publicDirectoryPath = path.join(__dirname, '../public');
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -38,6 +41,10 @@ app.use(compression());
 // enable cors
 app.use(cors());
 app.options('*', cors());
+
+app.use(express.static(publicDirectoryPath));
+
+app.set('view engine', 'hbs');
 
 // v1 api routes
 app.use('/v1', routes);

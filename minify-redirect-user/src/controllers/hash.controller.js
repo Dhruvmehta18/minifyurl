@@ -5,13 +5,13 @@ const catchAsync = require('../utils/catchAsync');
 const { hashService } = require('../services');
 
 const getUrl = catchAsync(async (req, res) => {
-  const item = await hashService.getOriginalUrl(req.params.minify_id);
-  
-  if (item === undefined || item === null) {
-    throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
-  }
-  res.header('location', `${item.originalLink}`);
-  res.status(httpStatus.MOVED_PERMANENTLY).send({});
+    const item = await hashService.getOriginalUrl(req.params.minify_id);
+    if (item === undefined || item === null) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Given link not found');
+    } else {
+      res.header('location', `${item.originalLink}`);
+      res.status(httpStatus.MOVED_PERMANENTLY).render('index', { originalLink: item.originalLink });
+    }
 });
 
 module.exports = {

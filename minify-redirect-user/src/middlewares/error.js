@@ -34,8 +34,17 @@ const errorHandler = (err, req, res, next) => {
   if (config.env === 'development') {
     logger.error(err);
   }
-
-  res.status(statusCode).send(response);
+  switch (statusCode) {
+    case httpStatus.NOT_FOUND:
+      res.status(statusCode).render('404Page');
+      break;
+    case httpStatus.INTERNAL_SERVER_ERROR:
+      res.status(statusCode).render('500Page');
+      break;
+    default:
+      res.status(statusCode).send(response);
+      break;
+  }
 };
 
 module.exports = {

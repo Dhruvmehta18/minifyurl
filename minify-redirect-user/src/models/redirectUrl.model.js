@@ -23,14 +23,9 @@ const getOriginalUrl = async (minify_id = '') => {
     },
     AttributesToGet: ['originalLink', 'expirationTime'],
   };
-  try {
     const data = await docClient.get(params).promise();
     logger.debug(JSON.stringify(data));
     return data;
-  } catch (error) {
-    throw error;
-    //TODO 1 : fix error controlling mechanism
-  }
 };
 
 const RedirectUrl = {
