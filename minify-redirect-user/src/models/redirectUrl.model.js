@@ -7,7 +7,7 @@ const aws = config.aws;
 if (config.env === 'development') {
   AWS.config.update({
     region: 'us-east-2',
-    // endpoint: 'http://dynamodb-local-redirect:8000', //if using docker-comose.dev script then this else localhost in place of dynamodb-local
+    // endpoint: 'http://dynamodb-local-redirect:8000', //if using docker-comose.dev script then use this else localhost in place of dynamodb-local
   });
 }
 
@@ -23,9 +23,9 @@ const getOriginalUrl = async (minify_id = '') => {
     },
     AttributesToGet: ['originalLink', 'expirationTime'],
   };
-    const data = await docClient.get(params).promise();
-    logger.debug(JSON.stringify(data));
-    return data;
+  const data = await docClient.get(params).promise();
+  logger.debug(JSON.stringify(data));
+  return data;
 };
 
 const RedirectUrl = {
