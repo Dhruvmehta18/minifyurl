@@ -5,6 +5,14 @@ const objectId = (value, helpers) => {
   return value;
 };
 
+const minifyId = (value, helpers) => {
+  if(!value.match(/\A[\-_0-9a-zA-Z]{3,40}\z/)){
+    return helpers.message('"{{#label}}" must be a valid minify id');
+  }
+  return value;
+}
+
 module.exports = {
   objectId,
+  minifyId
 };
