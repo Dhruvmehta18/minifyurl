@@ -3196,6 +3196,11 @@
     "handlebars" "4.7.6"
     "walk" "2.3.14"
 
+"helmet-csp@^3.3.1":
+  "integrity" "sha512-afNs8egrYqUAxURPPPw3M1yBpKMDL8p4xOf0kPl6c7Wtzhf6MRcV7dk9sEKdYSRq8NL4RIgXV/4O4iK9e48Izg=="
+  "resolved" "https://registry.npmjs.org/helmet-csp/-/helmet-csp-3.3.1.tgz"
+  "version" "3.3.1"
+
 "helmet@^4.1.0":
   "integrity" "sha512-aoiSxXMd0ks1ojYpSCFoCRzgv4rY/uB9jKStaw8PkXwsdLYa/Gq+Nc5l0soH0cwBIsLAlujPnx4HLQs+LaXCrQ=="
   "resolved" "https://registry.yarnpkg.com/helmet/-/helmet-4.2.0.tgz"
@@ -5726,6 +5731,11 @@
   "version" "3.5.0"
   dependencies:
     "picomatch" "^2.2.1"
+
+"referrer-policy@^1.2.0":
+  "integrity" "sha512-LgQJIuS6nAy1Jd88DCQRemyE3mS+ispwlqMk3b0yjZ257fI1v9c+/p6SD5gP5FGyXUIgrNOAfmyioHwZtYv2VA=="
+  "resolved" "https://registry.npmjs.org/referrer-policy/-/referrer-policy-1.2.0.tgz"
+  "version" "1.2.0"
 
 "regex-not@^1.0.0", "regex-not@^1.0.2":
   "integrity" "sha512-J6SDjUgDxQj5NusnOtdFxDwN/+HWykR8GELwctJ7mdqhcyy1xEc4SRFHUXvxTp661YaVKAjfRLZ9cCqS6tn32A=="

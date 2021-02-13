@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const helmet = require('helmet');
+const referrerPolicy = require('referrer-policy');
+const contentSecurityPolicy = require("helmet-csp");
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
@@ -23,7 +25,7 @@ if (config.env !== 'test') {
 }
 
 // set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
 
 // parse json request body
 app.use(express.json());
@@ -39,8 +41,11 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // enable cors
-app.use(cors());
-app.options('*', cors());
+// app.use(cors());
+// app.options('*', cors());
+
+
+// app.use(referrerPolicy({ policy: 'unsafe-url' }))
 
 app.use(express.static(publicDirectoryPath));
 
@@ -48,7 +53,16 @@ app.set('view engine', 'hbs');
 
 // v1 api routes
 app.use('/v1', routes);
-app.use('', hashRoute);
+app.use('', contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'"],
+    objectSrc: ["'none'"],
+    upgradeInsecureRequests: [],
+  }
+}),
+referrerPolicy({ policy: 'unsafe-url' }), 
+hashRoute);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

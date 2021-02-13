@@ -9,7 +9,8 @@ const getUrl = catchAsync(async (req, res) => {
     if (item === undefined || item === null) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Given link not found');
     } else {
-      res.header('location', `${item.originalLink}`);
+      res.set('Cache-Control', `private, max-age=90`);
+      res.set('location', `${item.originalLink}`);
       res.status(httpStatus.MOVED_PERMANENTLY).render('index', { originalLink: item.originalLink });
     }
 });
