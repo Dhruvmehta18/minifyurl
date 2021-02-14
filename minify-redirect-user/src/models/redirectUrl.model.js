@@ -6,8 +6,13 @@ const aws = config.aws;
 
 if (config.env === 'development') {
   AWS.config.update({
+    region: 'local',
+    endpoint: config.aws.dynamodb.endpoint, //if using docker-comose.dev script then use this else localhost in place of dynamodb-local
+  });
+}
+if(config.env === 'production'){
+  AWS.config.update({
     region: 'us-east-2',
-    // endpoint: 'http://dynamodb-local-redirect:8000', //if using docker-comose.dev script then use this else localhost in place of dynamodb-local
   });
 }
 

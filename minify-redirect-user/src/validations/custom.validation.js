@@ -6,7 +6,7 @@ const objectId = (value, helpers) => {
 };
 
 const minifyId = (value, helpers) => {
-  if(!value.match(/\A[\-_0-9a-zA-Z]{3,40}\z/)){
+  if(!value.match(/^[\-_0-9a-zA-Z]{3,40}$/)){
     return helpers.message('"{{#label}}" must be a valid minify id');
   }
   return value;
