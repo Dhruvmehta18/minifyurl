@@ -105,3 +105,6 @@ dist
 
 # Deepcode cache file
 **/.dccache
+
+# map created when converting from scsss to css
+**/*.css.map

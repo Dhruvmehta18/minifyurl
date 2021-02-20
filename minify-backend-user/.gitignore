@@ -15,3 +15,6 @@ coverage
 **/.dccache
 
 docker
+
+# map created when converting from scsss to css
+**/*.css.map

@@ -12,3 +12,6 @@ yarn-error.log
 coverage
 
 docker
+
+# map created when converting from scsss to css
+**/*.css.map
