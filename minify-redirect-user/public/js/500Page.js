@@ -49,7 +49,7 @@ perspec.addEventListener('animationend', function (e) {
                 let lineLength = randomIntFromInterval(25, 97);
                 var node = document.createElement("li");
                 node.classList.add('node-' + index);
-                elem.querySelector('.code ul').appendChild(node).setAttribute('style', '--linelength: ' + lineLength + '%;');
+                elem.querySelector('.code ul').appendChild(node).style.setProperty('--linelength', `${lineLength}%`);
 
                 //draw lines of code 1 by 1
                 if (index == 0) {

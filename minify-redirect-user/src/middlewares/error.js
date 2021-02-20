@@ -36,10 +36,10 @@ const errorHandler = (err, req, res, next) => {
   }
   switch (statusCode) {
     case httpStatus.NOT_FOUND:
-      res.status(statusCode).render('404Page');
+      res.status(statusCode).render('500Page', {sec_nonce: `${res.locals.nonce}`});
       break;
     case httpStatus.INTERNAL_SERVER_ERROR:
-      res.status(statusCode).render('500Page');
+      res.status(statusCode).render('500Page', {sec_nonce: `${res.locals.nonce}`});
       break;
     default:
       res.status(statusCode).send(response);

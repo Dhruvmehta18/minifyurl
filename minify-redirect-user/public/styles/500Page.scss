@@ -36,11 +36,9 @@ html {
 .writing .topbar div.green {
   background-color: #60d060;
 }
-
 .writing .topbar div.red {
   background-color: red;
 }
-
 .writing .topbar div.yellow {
   background-color: #e6c015;
 }
@@ -147,6 +145,7 @@ html {
     -webkit-transform: rotateY(0deg);
     transform: rotateY(0deg);
   }
+
   100% {
     -webkit-transform: rotateY(-30deg);
     transform: rotateY(-30deg);
@@ -158,6 +157,7 @@ html {
     -webkit-transform: rotateY(0deg);
     transform: rotateY(0deg);
   }
+
   100% {
     -webkit-transform: rotateY(-30deg);
     transform: rotateY(-30deg);
@@ -169,6 +169,7 @@ html {
     -webkit-transform: translate(0, 0) scale(1);
     transform: translate(0, 0) scale(1);
   }
+
   100% {
     -webkit-transform: translate(var(--spreaddist), var(--vertdist)) scale(var(--scaledist));
     transform: translate(var(--spreaddist), var(--vertdist)) scale(var(--scaledist));
@@ -180,6 +181,7 @@ html {
     -webkit-transform: translate(0, 0) scale(1);
     transform: translate(0, 0) scale(1);
   }
+
   100% {
     -webkit-transform: translate(var(--spreaddist), var(--vertdist)) scale(var(--scaledist));
     transform: translate(var(--spreaddist), var(--vertdist)) scale(var(--scaledist));
@@ -190,6 +192,7 @@ html {
   0% {
     width: 0;
   }
+
   100% {
     width: var(--linelength);
   }
@@ -199,6 +202,7 @@ html {
   0% {
     width: 0;
   }
+
   100% {
     width: var(--linelength);
   }
@@ -235,45 +239,10 @@ html {
   }
 }
 
-div.stack-container > div.card-container:nth-child(1) > div.perspec {
-  --spreaddist: calc(125px - 0*25px);
-  --scaledist: calc(0.75 + 0*0.05);
-  --vertdist: calc(-25px + 0*5px);
+@for $i from 0 through 6 {
+  div.stack-container > div.card-container:nth-child(#{$i+1}) > div.perspec {
+    --spreaddist: calc(125px - #{$i}*25px);
+    --scaledist: calc(0.75 + #{$i}*0.05);
+    --vertdist: calc(-25px + #{$i}*5px);
+  }
 }
-
-div.stack-container > div.card-container:nth-child(2) > div.perspec {
-  --spreaddist: calc(125px - 1*25px);
-  --scaledist: calc(0.75 + 1*0.05);
-  --vertdist: calc(-25px + 1*5px);
-}
-
-div.stack-container > div.card-container:nth-child(3) > div.perspec {
-  --spreaddist: calc(125px - 2*25px);
-  --scaledist: calc(0.75 + 2*0.05);
-  --vertdist: calc(-25px + 2*5px);
-}
-
-div.stack-container > div.card-container:nth-child(4) > div.perspec {
-  --spreaddist: calc(125px - 3*25px);
-  --scaledist: calc(0.75 + 3*0.05);
-  --vertdist: calc(-25px + 3*5px);
-}
-
-div.stack-container > div.card-container:nth-child(5) > div.perspec {
-  --spreaddist: calc(125px - 4*25px);
-  --scaledist: calc(0.75 + 4*0.05);
-  --vertdist: calc(-25px + 4*5px);
-}
-
-div.stack-container > div.card-container:nth-child(6) > div.perspec {
-  --spreaddist: calc(125px - 5*25px);
-  --scaledist: calc(0.75 + 5*0.05);
-  --vertdist: calc(-25px + 5*5px);
-}
-
-div.stack-container > div.card-container:nth-child(7) > div.perspec {
-  --spreaddist: calc(125px - 6*25px);
-  --scaledist: calc(0.75 + 6*0.05);
-  --vertdist: calc(-25px + 6*5px);
-}
-/*# sourceMappingURL=500Page.css.map */
