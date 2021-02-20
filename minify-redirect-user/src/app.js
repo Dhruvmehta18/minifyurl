@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const referrerPolicy = require('referrer-policy');
 const contentSecurityPolicy = require('helmet-csp');
+const helmet = require('helmet');
 const xss = require('xss-clean');
 const crypto = require('crypto');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -14,7 +15,9 @@ const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const hashRoute = require('./routes/v1/hash.route');
 
+// deepcode ignore UseCsurfForExpress: This express app doesn't have any sessions. The user cannot submit any unauthorized command as it only has get request
 const app = express();
+app.use(helmet());
 
 const publicDirectoryPath = path.join(__dirname, '../public');
 
