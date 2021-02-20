@@ -1,21 +1,78 @@
-components:
-  schemas:
-
-    Error:
-      type: object
-      properties:
-        code:
-          type: number
-        message:
-          type: string
-
-  responses:
-    NotFound:
-      description: Not found
-      content:
-        application/json:
+swagger: '2.0'
+info:
+  description: 'This a documentation for Minify Redirect API and service.'
+  version: '1.0.0'
+  title: 'Minify Redirect API documentation'
+host: 'localhost:3001'
+schemes:
+  - 'https'
+  - 'http'
+paths:
+  '/{minify_id}':
+    get:
+      tags:
+        - 'redirect'
+      summary: 'return the url object with html page'
+      description: 'The link will return html page having location header parameter to originalLink'
+      operationId: 'redirectLink'
+      produces:
+        - 'text/html'
+      parameters:
+        - name: 'minify_id'
+          in: 'path'
+          description: 'ID of URL to return'
+          required: true
+          type: 'string'
+      responses:
+        '301':
+          description: 'The response will redirect to the location header value'
+        '400':
+          description: 'Invalid MinifyId supplied'
           schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: 404
-            message: Not found
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Minify Id not found'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  Url:
+    type: 'object'
+    required:
+      - 'hash'
+    properties:
+      hash:
+        type: 'string'
+        format: 'base64'
+        description: 'The unique string with which the original link can be determined'
+      originalLink:
+        type: 'string'
+        format: 'uri'
+        description: 'The original link to which the page is to be redirected'
+      creationTime:
+        type: 'string'
+        format: 'ISO 8601'
+        description: 'The time in which the shorten link is created'
+      expirationTime:
+        type: 'string'
+        format: 'ISO 8601'
+        description: 'The time in which the shorten link will expire and will not be access by anyone'
+    xml:
+      name: 'Url'
+    example:
+      hash: 'z1d0SA2'
+      originalLink: 'https://www.google.com'
+      creationTime: '2021-02-10T10:09:45.720Z'
+      expirationTime: '2021-06-10T10:09:45.720Z'
+
+  Error:
+    type: 'object'
+    properties:
+      code:
+        type: 'number'
+      message:
+        type: 'string'
