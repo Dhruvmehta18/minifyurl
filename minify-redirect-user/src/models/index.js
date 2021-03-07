@@ -1,1 +1,1 @@
-module.exports.RedirectUrl = require('./redirectUrl.model')
+module.exports.RedirectUrl = require('./redirectUrl.model');
