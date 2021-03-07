@@ -3,29 +3,29 @@ version: '3'
 services:
   minify-redirect-app:
     build: .
-    image: node-app
+    image: minify-redirect-app
     environment:
       - MONGODB_URL=mongodb://mongodb:27017/node-boilerplate
     ports:
       - '3001:3001'
-    depends_on:
-      - mongodb
+    # depends_on:
+    #   - mongodb
     volumes:
       - .:/usr/src/node-app
-    networks:
-      - node-network
+    # networks:
+    #   - node-network
 
-  mongodb:
-    image: mongo:4.2.1-bionic
-    ports:
-      - '27017:27017'
-    volumes:
-      - dbdata:/data/db
-    networks:
-      - node-network
+#   mongodb:
+#     image: mongo:4.2.1-bionic
+#     ports:
+#       - '27017:27017'
+#     volumes:
+#       - dbdata:/data/db
+#     networks:
+#       - node-network
 
-volumes:
-  dbdata:
+# volumes:
+#   dbdata:
 
 networks:
   node-network:

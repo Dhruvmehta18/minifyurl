@@ -1,14 +1,19 @@
-FROM node:alpine
+FROM node:14.16.0
 
-RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
+# Create and define the node_modules's cache directory.
 
+RUN mkdir -p /usr/src/node-app
 WORKDIR /usr/src/node-app
 
 COPY package.json yarn.lock ./
 
-USER node
-
 RUN yarn install --pure-lockfile
+
+RUN yarn add --dev jest
+
+COPY entrypoint_test.sh ./
+
+RUN ["chmod", "777", "/usr/src/node-app/entrypoint_test.sh"]
 
 COPY --chown=node:node . .
 
