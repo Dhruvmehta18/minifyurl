@@ -4,7 +4,6 @@ const referrerPolicy = require('referrer-policy');
 const contentSecurityPolicy = require('helmet-csp');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const crypto = require('crypto');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const httpStatus = require('http-status');
@@ -47,17 +46,12 @@ app.set('view engine', 'hbs');
 app.use('/v1', routes);
 app.use(
   '',
-  (req, res, next)=>{
-    res.locals.nonce = crypto.randomBytes(16).toString('base64');
-    console.log(res.locals.nonce);
-    next()
-  },
   contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'"],
       objectSrc: ["'none'"],
-      styleSrc: ["'self'", (req, res) => `'nonce-${ res.locals.nonce }'`]
+      styleSrc: ["'self'"],
     },
   }),
   referrerPolicy({ policy: 'unsafe-url' }),

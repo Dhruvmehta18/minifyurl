@@ -39,7 +39,7 @@ const errorHandler = (err, req, res, next) => {
       res.status(statusCode).render('404Page');
       break;
     case httpStatus.INTERNAL_SERVER_ERROR:
-      res.status(statusCode).render('500Page', {sec_nonce: `${res.locals.nonce}`});
+      res.status(statusCode).render('500Page');
       break;
     default:
       res.status(statusCode).send(response);
