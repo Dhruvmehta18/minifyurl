@@ -134,16 +134,10 @@ describe('Error middlewares', () => {
       config.env = 'production';
       const error = new ApiError(httpStatus.BAD_REQUEST, 'Any error', false);
       const res = httpMocks.createResponse();
-      const sendSpy = jest.spyOn(res, 'send');
+      const sendSpy = jest.spyOn(res, 'render');
 
       errorHandler(error, httpMocks.createRequest(), res);
-
-      expect(sendSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          code: httpStatus.INTERNAL_SERVER_ERROR,
-          message: httpStatus[httpStatus.INTERNAL_SERVER_ERROR],
-        })
-      );
+      expect(sendSpy).toHaveBeenCalledWith('500Page');
       expect(res.locals.errorMessage).toBe(error.message);
       config.env = process.env.NODE_ENV;
     });
