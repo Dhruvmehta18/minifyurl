@@ -1,36 +1,34 @@
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
 const config = require('../config/config');
-const logger = require('../config/logger');
 
-const aws = config.aws;
+const awsConfig = config.aws;
+const { region } = awsConfig.dynamodb;
+AWS.config.update({
+  region,
+});
 
-if (config.env === 'development') {
+if (config.env === 'development' || config.env === 'test') {
+  const endpoint =
+    awsConfig.dynamodb.region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
+  // if using docker-comose.dev script then use this else localhost in place of dynamodb-local
   AWS.config.update({
-    region: 'local',
-    endpoint: config.aws.dynamodb.endpoint, //if using docker-comose.dev script then use this else localhost in place of dynamodb-local
+    endpoint,
   });
 }
-if(config.env === 'production'){
-  AWS.config.update({
-    region: 'us-east-2',
-  });
-}
 
-var docClient = new AWS.DynamoDB.DocumentClient();
+const docClient = new AWS.DynamoDB.DocumentClient();
 
-var table = aws.dynamodb.URL_TABLE.TableName;
+const table = awsConfig.dynamodb.URL_TABLE.TableName;
 
 const getOriginalUrl = async (minify_id = '') => {
-  var params = {
+  const params = {
     TableName: table,
     Key: {
       hash: minify_id,
     },
     AttributesToGet: ['originalLink', 'expirationTime'],
   };
-  const data = await docClient.get(params).promise();
-  logger.debug(JSON.stringify(data));
-  return data;
+  return docClient.get(params).promise();
 };
 
 const RedirectUrl = {

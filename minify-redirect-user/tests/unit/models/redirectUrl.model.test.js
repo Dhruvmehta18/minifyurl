@@ -1,19 +1,26 @@
-const { RedirectUrl } = require('../../../src/models');
 const crypto = require('crypto');
-const setupTestAwsDynamoDB = require('../../utils/setupTestAwsDynamoDB');
+const { RedirectUrl } = require('../../../src/models');
+const { setupTestAwsDynamoDB } = require('../../utils/setupTestAwsDynamoDB');
+const logger = require('../../../src/config/logger');
+
+const minifyId = crypto
+  .randomBytes(16)
+  .toString('base64')
+  .match(/([a-zA-Z0-9]{7})/)[0];
+logger.debug(minifyId);
+setupTestAwsDynamoDB(minifyId);
 
 describe('Redirect Url model', () => {
-  let minify_id = '';
-  beforeAll(() => {
-    minify_id = crypto
-      .randomBytes(10)
-      .toString('base64')
-      .match(/([a-zA-Z0-9]{7})/)[0];
-      setupTestAwsDynamoDB(minify_id)
+  test('should sent Item object when hash property is present in URL database', async () => {
+    const { Item } = await RedirectUrl.getOriginalUrl(minifyId);
+    expect(Item).toBeDefined();
   });
 
-  test('should work correctly and get the originalLink and expiration only as output', async ()=>{
-      await expect(RedirectUrl.getOriginalUrl(minify_id)).resolves.;
-
-  })
+  test('should work correctly and get only originalLink and expirationTime property as output', async () => {
+    const { Item } = await RedirectUrl.getOriginalUrl(minifyId);
+    expect(Item).toHaveProperty('originalLink');
+    expect(Item).toHaveProperty('expirationTime');
+    expect(Item).not.toHaveProperty('creationTime');
+    expect(Item).not.toHaveProperty('hash');
+  });
 });

@@ -1,74 +1,62 @@
-var AWS = require('aws-sdk');
+const { DocumentClient } = require('aws-sdk/clients/dynamodb');
 const config = require('../../src/config/config');
+const logger = require('../../src/config/logger');
 
-const aws = config.aws;
+const awsConfig = config.aws;
 
-if (config.env === 'test') {
-  AWS.config.update({
-    region: 'local',
-    endpoint: config.aws.dynamodb.endpoint,
-  });
-}
+const table = awsConfig.dynamodb.URL_TABLE.TableName;
 
-var docClient = new AWS.DynamoDB.DocumentClient();
-
-var table = aws.dynamodb.URL_TABLE.TableName;
-
-//Only use for tests
-const setShortenUrl = async (minifyUrlObj) => {
-  var params = {
-    TableName: table,
-    Item: minifyUrlObj,
-  };
-
-  logger.debug('Adding a new item...');
-  try {
-    const data = await docClient.put(params).promise();
-    logger.debug('Success');
-    logger.debug(data);
-    return data;
-  } catch (error) {
-    throw error;
-  }
+const isTest = process.env.JEST_WORKER_ID;
+const configDoc = {
+  convertEmptyValues: true,
+  ...(isTest && {
+    endpoint: awsConfig.dynamodb.endpoint,
+    sslEnabled: false,
+    region: awsConfig.dynamodb.region,
+  }),
 };
 
-//Only use for tests
-const deleteUrl = async (hash) => {
-  var params = {
+const ddb = new DocumentClient(configDoc);
+
+// Only use for tests
+const setShortenUrl = (minifyUrlObj) => {
+  const params = {
     TableName: table,
-    Key: {
-      hash: hash,
+    Item: {
+      ...minifyUrlObj,
     },
   };
 
-  console.log('Attempting a conditional delete...');
-  try {
-    const data = docClient.delete(params).promise();
-    logger.debug('Item Successfully deleted');
-    return data;
-  } catch (error) {
-    throw error;
-  }
+  logger.debug('Adding a new item...');
+  return ddb.put(params).promise();
 };
 
-const setupTestAwsDynamoDB = (hash = '') => {
+// Only use for tests
+const deleteUrl = (hash) => {
+  const params = {
+    TableName: table,
+    Key: {
+      hash,
+    },
+  };
+  return ddb.delete(params).promise();
+};
+
+const setupTestAwsDynamoDB = (minify_id = '') => {
   beforeAll(async () => {
     const now = new Date();
     const minifyUrlObj = {
-      hash: hash,
+      hash: minify_id,
       originalLink: 'https://www.google.com',
       creationTime: now.toISOString(),
       expirationTime: now.toISOString(),
     };
-    const data = await setShortenUrl(minifyUrlObj);
-    if (!data) {
-      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Some error happen on our side');
-    }
+    await setShortenUrl(minifyUrlObj);
   });
 
   afterAll(async () => {
-    await deleteUrl(hash);
+    await deleteUrl(minify_id);
   });
 };
 
-module.exports = setupTestAwsDynamoDB;
+module.exports = { setupTestAwsDynamoDB, ddb };
