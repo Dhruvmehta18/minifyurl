@@ -3,14 +3,14 @@ const config = require('../config/config');
 
 const awsConfig = config.aws;
 const { region } = awsConfig.dynamodb;
+
+const endpoint = region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
+
 AWS.config.update({
   region,
 });
 
-if (config.env === 'development' || config.env === 'test') {
-  const endpoint =
-    awsConfig.dynamodb.region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
-  // if using docker-comose.dev script then use this else localhost in place of dynamodb-local
+if (region === 'local-env' || config.env === 'development' || config.env === 'test') {
   AWS.config.update({
     endpoint,
   });
