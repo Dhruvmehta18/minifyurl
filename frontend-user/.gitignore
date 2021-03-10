@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# map created when converting from scsss to css
+**/*.css.map
