@@ -1,13 +1,18 @@
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
 const config = require('../config/config');
-const logger = require('../config/logger');
 
-const aws = config.aws;
+const awsConfig = config.aws;
+const { region } = awsConfig.dynamodb;
 
-if (config.env === 'development') {
+const endpoint = region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
+
+AWS.config.update({
+  region,
+});
+
+if (region === 'local-env' || config.env === 'development' || config.env === 'test') {
   AWS.config.update({
-    region: 'localhost',
-    endpoint: 'http://dynamodb-local:8000', //if using docker-comose.dev script then this else localhost in place of dynamodb-local
+    endpoint,
   });
 }
 
