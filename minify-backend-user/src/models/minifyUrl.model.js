@@ -19,19 +19,10 @@ if (region === 'local-env' || config.env === 'development' || config.env === 'te
 const DynamoDB = new AWS.DynamoDB();
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-var table = aws.dynamodb.URL_TABLE.TableName;
+var table = awsConfig.dynamodb.URL_TABLE.TableName;
 
 const createTable = async () => {
-  var params = aws.dynamodb.URL_TABLE;
-  logger.info(`Creating table ${params}...`);
-  try {
-    const data = await DynamoDB.createTable(params).promise();
-    logger.info('Success');
-    logger.info(data);
-    return data;
-  } catch (error) {
-    logger.error(error);
-  }
+  return await DynamoDB.createTable(awsConfig.dynamodb.URL_TABLE).promise();
 };
 
 const setShortenUrl = async (minifyUrlObj) => {
@@ -39,19 +30,10 @@ const setShortenUrl = async (minifyUrlObj) => {
     TableName: table,
     Item: minifyUrlObj,
   };
-
-  logger.debug('Adding a new item...');
-  try {
-    const data = await docClient.put(params).promise();
-    logger.debug('Success');
-    logger.debug(data);
-    return data;
-  } catch (error) {
-    throw error;
-  }
+    return await docClient.put(params).promise();
 };
 
-const getOriginalUrl = (hash) => {
+const getUrl = async (hash) => {
   var params = {
     TableName: table,
     Key: {
@@ -59,38 +41,23 @@ const getOriginalUrl = (hash) => {
     },
   };
 
-  docClient.get(params, function (err, data) {
-    if (err) {
-      logger.error('Unable to read item. Error JSON:', JSON.stringify(err, null, 2));
-    } else {
-      logger.debug('GetItem succeeded:', JSON.stringify(data, null, 2));
-    }
-  });
+  return await docClient.get(params).promise();
 };
 
-const updateUrl = (hash) => {
+const updateUrl = (hash, originalLink = "") => {
   var params = {
     TableName: table,
     Key: {
       hash: hash,
     },
-    UpdateExpression: 'set info.rating = :r, info.plot=:p, info.actors=:a',
+    UpdateExpression: 'set URL.originalLink = :u',
     ExpressionAttributeValues: {
-      ':r': 5.5,
-      ':p': 'Everything happens all at once.',
-      ':a': ['Larry', 'Moe', 'Curly'],
+      ':u': originalLink,
     },
     ReturnValues: 'UPDATED_NEW',
   };
 
-  console.log('Updating the item...');
-  docClient.update(params, function (err, data) {
-    if (err) {
-      logger.error('Unable to update item. Error JSON:', JSON.stringify(err, null, 2));
-    } else {
-      logger.debug('UpdateItem succeeded:', JSON.stringify(data, null, 2));
-    }
-  });
+  return await docClient.update(params).promise();
 };
 
 const deleteUrl = (hash) => {
@@ -102,19 +69,13 @@ const deleteUrl = (hash) => {
   };
 
   console.log('Attempting a conditional delete...');
-  docClient.delete(params, function (err, data) {
-    if (err) {
-      logger.error('Unable to delete item. Error JSON:', JSON.stringify(err, null, 2));
-    } else {
-      logger.debug('DeleteItem succeeded:', JSON.stringify(data, null, 2));
-    }
-  });
+  return await docClient.delete(params).promise();
 };
 
 const MinifyUrl = {
   createTable: createTable,
   setShortenUrl: setShortenUrl,
-  getOriginalUrl: getOriginalUrl,
+  getUrl: getUrl,
   updateUrl: updateUrl,
   deleteUrl: deleteUrl,
 };
