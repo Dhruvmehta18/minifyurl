@@ -1,33 +1,44 @@
-var shajs = require('sha.js');
+const shajs = require('sha.js');
 const MinifyUrl = require('../models/minifyUrl.model');
-const logger = require('../config/logger');
-const ApiError = require('../utils/ApiError');
-const httpStatus = require('http-status');
 
 const createHashUrl = async (linkBody) => {
-  const original_url = linkBody.original_url;
+  const { originalUrl } = linkBody;
   const now = new Date();
-  const hashData = `${original_url}${now.getMilliseconds()}`;
+  const hashData = `${originalUrl}${now.getMilliseconds()}`;
   const shortLinkHash = shajs('sha256')
     .update(hashData)
     .digest('base64')
     .match(/([a-zA-Z0-9]{7})/)[0];
   const minifyUrlObj = {
     hash: shortLinkHash,
-    originalLink: original_url,
+    originalLink: originalUrl,
     creationTime: now.toISOString(),
     expirationTime: now.toISOString(),
   };
-  const data = await MinifyUrl.setShortenUrl(minifyUrlObj);
-  if (!data) {
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Some error happen on our side');
-  }
-  const hashUrlObj = {
-    ...minifyUrlObj,
-  };
-  return hashUrlObj;
+
+  return MinifyUrl.setShortenUrl(minifyUrlObj);
+};
+
+const getUrl = async (body) => {
+  const { hash } = body;
+
+  const data = await MinifyUrl.getUrl(hash);
+  return data.Item;
+};
+
+const updateOriginalUrl = async (linkBody) => {
+  const { hash, originalLink } = linkBody;
+  return MinifyUrl.updateOriginalUrl(hash, originalLink);
+};
+
+const deleteUrl = async (linkBody) => {
+  const { hash } = linkBody;
+  return MinifyUrl.deleteUrl(hash);
 };
 
 module.exports = {
   createHashUrl,
+  getUrl,
+  updateOriginalUrl,
+  deleteUrl,
 };

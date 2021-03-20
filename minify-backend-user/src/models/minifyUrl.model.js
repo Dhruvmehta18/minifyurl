@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const config = require('../config/config');
+const logger = require('../config/logger');
 
 const awsConfig = config.aws;
 const { region } = awsConfig.dynamodb;
@@ -17,38 +18,38 @@ if (region === 'local-env' || config.env === 'development' || config.env === 'te
 }
 
 const DynamoDB = new AWS.DynamoDB();
-var docClient = new AWS.DynamoDB.DocumentClient();
+const docClient = new AWS.DynamoDB.DocumentClient();
 
-var table = awsConfig.dynamodb.URL_TABLE.TableName;
+const table = awsConfig.dynamodb.URL_TABLE.TableName;
 
 const createTable = async () => {
-  return await DynamoDB.createTable(awsConfig.dynamodb.URL_TABLE).promise();
+  return DynamoDB.createTable(awsConfig.dynamodb.URL_TABLE).promise();
 };
 
 const setShortenUrl = async (minifyUrlObj) => {
-  var params = {
+  const params = {
     TableName: table,
     Item: minifyUrlObj,
   };
-    return await docClient.put(params).promise();
+  return docClient.put(params).promise();
 };
 
 const getUrl = async (hash) => {
-  var params = {
+  const params = {
     TableName: table,
     Key: {
-      hash: hash,
+      hash,
     },
   };
 
-  return await docClient.get(params).promise();
+  return docClient.get(params).promise();
 };
 
-const updateUrl = (hash, originalLink = "") => {
-  var params = {
+const updateOriginalUrl = async (hash, originalLink = '') => {
+  const params = {
     TableName: table,
     Key: {
-      hash: hash,
+      hash,
     },
     UpdateExpression: 'set URL.originalLink = :u',
     ExpressionAttributeValues: {
@@ -57,27 +58,27 @@ const updateUrl = (hash, originalLink = "") => {
     ReturnValues: 'UPDATED_NEW',
   };
 
-  return await docClient.update(params).promise();
+  return docClient.update(params).promise();
 };
 
-const deleteUrl = (hash) => {
-  var params = {
+const deleteUrl = async (hash) => {
+  const params = {
     TableName: table,
     Key: {
-      hash: hash,
+      hash,
     },
   };
 
-  console.log('Attempting a conditional delete...');
-  return await docClient.delete(params).promise();
+  logger.d('Attempting a conditional delete...');
+  return docClient.delete(params).promise();
 };
 
 const MinifyUrl = {
-  createTable: createTable,
-  setShortenUrl: setShortenUrl,
-  getUrl: getUrl,
-  updateUrl: updateUrl,
-  deleteUrl: deleteUrl,
+  createTable,
+  setShortenUrl,
+  getUrl,
+  updateOriginalUrl,
+  deleteUrl,
 };
 
 module.exports = MinifyUrl;
