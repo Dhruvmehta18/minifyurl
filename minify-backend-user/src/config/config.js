@@ -18,7 +18,7 @@ const envVarsSchema = Joi.object()
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     AWS_ACCESS_KEY_ID: Joi.string().description('aws access key for accessing dynamodb'),
-    AWS_SECRET_ACCESS_KEY:  Joi.string().description('aws secret access key for accessing dynamodb'),
+    AWS_SECRET_ACCESS_KEY: Joi.string().description('aws secret access key for accessing dynamodb'),
     DYNAMODB_URL: Joi.string().valid(
       'http://dynamodb-local-redirect:8000',
       'http://dynamodb-local:8000',
@@ -52,6 +52,11 @@ module.exports = {
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
     resetPasswordExpirationMinutes: 10,
   },
+  services: {
+    authService: {
+      endpoint: 'http://localhost:3002/v1/users',
+    },
+  },
   email: {
     smtp: {
       host: envVars.SMTP_HOST,
@@ -68,14 +73,20 @@ module.exports = {
       URL_TABLE: {
         TableName: 'URL',
         KeySchema: [
-          { AttributeName: 'hash', KeyType: 'HASH' }, //Partition key
+          { AttributeName: 'minifyId', KeyType: 'HASH' },
+          { AttributeName: 'userId', KeyType: 'RANGE' },
         ],
-        AttributeDefinitions: [{ AttributeName: 'hash', AttributeType: 'S' }],
+        AttributeDefinitions: [
+          { AttributeName: 'minifyId', AttributeType: 'S' },
+          { AttributeName: 'userId', AttributeType: 'S' }
+        ],
         ProvisionedThroughput: {
           ReadCapacityUnits: 5,
           WriteCapacityUnits: 5,
-        }
-      }
-    }
-  }
+        },
+      },
+      endpoint: envVars.DYNAMODB_URL,
+      region: envVars.AWS_REGION,
+    },
+  },
 };

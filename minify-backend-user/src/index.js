@@ -18,9 +18,10 @@ server = app.listen(config.port, async () => {
   logger.info(`Listening to port ${config.port}`);
 
   if (config.env === 'development') {
-    const data = await MinifyUrl.createTable();
-    if (!data) {
-      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Some error happen on our side');
+    try{
+      const data = await MinifyUrl.createTable();
+    } catch(err){
+      logger.error(err);
     }
   }
 });

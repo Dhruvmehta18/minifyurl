@@ -5,13 +5,12 @@ const logger = require('../config/logger');
 const awsConfig = config.aws;
 const { region } = awsConfig.dynamodb;
 
-const endpoint = region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
-
 AWS.config.update({
   region,
 });
 
 if (region === 'local-env' || config.env === 'development' || config.env === 'test') {
+  const endpoint = region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
   AWS.config.update({
     endpoint,
   });
@@ -34,24 +33,29 @@ const setShortenUrl = async (minifyUrlObj) => {
   return docClient.put(params).promise();
 };
 
-const getUrl = async (hash) => {
+const getUrl = async (hash, userId) => {
+  console.log(userId);
   const params = {
     TableName: table,
     Key: {
-      hash,
+      "minifyId": hash,
+      "userId": userId
     },
   };
 
   return docClient.get(params).promise();
 };
 
-const updateOriginalUrl = async (hash, originalLink = '') => {
+const updateOriginalUrl = async (hash, originalLink = '', userId) => {
+  console.log(userId);
   const params = {
     TableName: table,
     Key: {
-      hash,
+      "minifyId": hash,
+      "userId": userId
     },
-    UpdateExpression: 'set URL.originalLink = :u',
+    UpdateExpression: 'set originalLink = :u',
+    ConditionExpression: 'attribute_exists(minifyId) and attribute_exists(userId)',
     ExpressionAttributeValues: {
       ':u': originalLink,
     },
@@ -61,15 +65,16 @@ const updateOriginalUrl = async (hash, originalLink = '') => {
   return docClient.update(params).promise();
 };
 
-const deleteUrl = async (hash) => {
+const deleteUrl = async (hash, userId) => {
   const params = {
     TableName: table,
     Key: {
-      hash,
+      "minifyId": hash,
+      "userId": userId
     },
+    ConditionExpression: 'attribute_exists(minifyId) and attribute_exists(userId)',
   };
 
-  logger.d('Attempting a conditional delete...');
   return docClient.delete(params).promise();
 };
 

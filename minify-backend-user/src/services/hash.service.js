@@ -1,39 +1,43 @@
 const shajs = require('sha.js');
+const logger = require('../config/logger');
 const MinifyUrl = require('../models/minifyUrl.model');
+const { addMonths } = require('../utils/dateUtils');
 
-const createHashUrl = async (linkBody) => {
-  const { originalUrl } = linkBody;
+const createHashUrl = async (linkBody ,userId) => {
+  const { original_url: originalUrl } = linkBody;
   const now = new Date();
+  const exprirationDate = addMonths(now, 6);
   const hashData = `${originalUrl}${now.getMilliseconds()}`;
   const shortLinkHash = shajs('sha256')
     .update(hashData)
     .digest('base64')
     .match(/([a-zA-Z0-9]{7})/)[0];
   const minifyUrlObj = {
-    hash: shortLinkHash,
+    minifyId: shortLinkHash,
     originalLink: originalUrl,
     creationTime: now.toISOString(),
-    expirationTime: now.toISOString(),
+    expirationTime: exprirationDate.toISOString(),
+    userId: userId
   };
-
-  return MinifyUrl.setShortenUrl(minifyUrlObj);
+  await MinifyUrl.setShortenUrl(minifyUrlObj);
+  return minifyUrlObj;
 };
 
-const getUrl = async (body) => {
-  const { hash } = body;
-
-  const data = await MinifyUrl.getUrl(hash);
+const getUrl = async (minifyId = "", userId) => {
+  const data = await MinifyUrl.getUrl(minifyId, userId);
   return data.Item;
 };
 
-const updateOriginalUrl = async (linkBody) => {
-  const { hash, originalLink } = linkBody;
-  return MinifyUrl.updateOriginalUrl(hash, originalLink);
+const updateOriginalUrl = async (linkParams, linkBody, userId) => {
+  const {minify_id: minifyId} = linkParams;
+  const { original_url: originalLink } = linkBody;
+  
+  return (await MinifyUrl.updateOriginalUrl(minifyId, originalLink, userId));
 };
 
-const deleteUrl = async (linkBody) => {
-  const { hash } = linkBody;
-  return MinifyUrl.deleteUrl(hash);
+const deleteUrl = async (linkParams, userId) => {
+  const { minify_id: minifyId } = linkParams;
+  return MinifyUrl.deleteUrl(minifyId, userId);
 };
 
 module.exports = {

@@ -5,9 +5,10 @@ const catchAsync = require('../utils/catchAsync');
 const { hashService } = require('../services');
 
 const createUrl = catchAsync(async (req, res) => {
-  const urlObject = await hashService.createHashUrl(req.body);
+  const urlObject = await hashService.createHashUrl(req.body, req.userId);
   if (urlObject === undefined || urlObject === null) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Given link not found');
+    // TODO : change the error code to already created resources 
+    throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
   } else {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.status(httpStatus.CREATED).send(urlObject);
@@ -23,22 +24,31 @@ const getUrls = catchAsync(async (req, res) => {
 });
 
 const getUrl = catchAsync(async (req, res) => {
-  // TODO : add the code for getting url by id
-  res.header('location', 'https://www.google.com');
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.status(httpStatus.OK).send({});
+  const data = await hashService.getUrl(req.params.minify_id, req.userId);
+  if (data === undefined || data === null) {
+    throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
+  } else {
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.status(httpStatus.OK).send(data);
+  }
 });
 
 const updateUrl = catchAsync(async (req, res) => {
-  const user = await hashService.updateOriginalUrl(req.body);
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.status(httpStatus.NO_CONTENT).send(user);
+  const updateUrl = await hashService.updateOriginalUrl(req.params, req.body, req.userId);
+  if (updateUrl === undefined || updateUrl === null) {
+    throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
+  } else {
+    res.status(httpStatus.NO_CONTENT).send();
+  }
 });
 
 const deleteUrl = catchAsync(async (req, res) => {
-  await hashService.deleteUrl(req.params.userId);
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.status(httpStatus.NO_CONTENT).send();
+  const data = await hashService.deleteUrl(req.params, req.userId);
+  if (data === undefined || data === null) {
+    throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
+  } else {
+    res.status(httpStatus.NO_CONTENT).send();
+  }
 });
 
 module.exports = {
