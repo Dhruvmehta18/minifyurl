@@ -23,6 +23,11 @@ const createHashUrl = async (linkBody ,userId) => {
   return minifyUrlObj;
 };
 
+const queryUrls = async (userId, filter, options) => {
+  const data = await MinifyUrl.queryUrls(userId, filter, options);
+  return data.Items;
+};
+
 const getUrl = async (minifyId = "", userId) => {
   const data = await MinifyUrl.getUrl(minifyId, userId);
   return data.Item;
@@ -37,12 +42,13 @@ const updateOriginalUrl = async (linkParams, linkBody, userId) => {
 
 const deleteUrl = async (linkParams, userId) => {
   const { minify_id: minifyId } = linkParams;
-  return MinifyUrl.deleteUrl(minifyId, userId);
+  return (await MinifyUrl.deleteUrl(minifyId, userId));
 };
 
 module.exports = {
   createHashUrl,
   getUrl,
+  queryUrls,
   updateOriginalUrl,
   deleteUrl,
 };

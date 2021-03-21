@@ -73,12 +73,12 @@ module.exports = {
       URL_TABLE: {
         TableName: 'URL',
         KeySchema: [
-          { AttributeName: 'minifyId', KeyType: 'HASH' },
-          { AttributeName: 'userId', KeyType: 'RANGE' },
+          { AttributeName: 'userId', KeyType: 'HASH' },
+          { AttributeName: 'minifyId', KeyType: 'RANGE' },
         ],
         AttributeDefinitions: [
+          { AttributeName: 'userId', AttributeType: 'S' },
           { AttributeName: 'minifyId', AttributeType: 'S' },
-          { AttributeName: 'userId', AttributeType: 'S' }
         ],
         ProvisionedThroughput: {
           ReadCapacityUnits: 5,

@@ -46,6 +46,21 @@ const getUrl = async (hash, userId) => {
   return docClient.get(params).promise();
 };
 
+const queryUrls = async (userId, filter, options) => {
+  console.log(userId);
+  const params = {
+    TableName: table,
+    KeyConditionExpression: "#userId = :userId",
+    ExpressionAttributeNames:{
+        "#userId": "userId"
+    },
+    ExpressionAttributeValues: {
+        ":userId": userId
+    }
+};
+  return docClient.query(params).promise();
+};
+
 const updateOriginalUrl = async (hash, originalLink = '', userId) => {
   console.log(userId);
   const params = {
@@ -82,6 +97,7 @@ const MinifyUrl = {
   createTable,
   setShortenUrl,
   getUrl,
+  queryUrls,
   updateOriginalUrl,
   deleteUrl,
 };

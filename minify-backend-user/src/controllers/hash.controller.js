@@ -15,12 +15,16 @@ const createUrl = catchAsync(async (req, res) => {
   }
 });
 
-const getUrls = catchAsync(async (req, res) => {
+const queryUrls = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await hashService.queryUsers(filter, options);
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.status(httpStatus.OK).send(result);
+  const result = await hashService.queryUrls(req.userId, filter, options);
+  if (result === undefined || result === null) { 
+    throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
+  } else {
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.status(httpStatus.OK).send(result);
+  }
 });
 
 const getUrl = catchAsync(async (req, res) => {
@@ -53,7 +57,7 @@ const deleteUrl = catchAsync(async (req, res) => {
 
 module.exports = {
   createUrl,
-  getUrls,
+  queryUrls,
   getUrl,
   updateUrl,
   deleteUrl,
