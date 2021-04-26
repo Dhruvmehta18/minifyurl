@@ -1,35 +1,24 @@
-const shajs = require('sha.js');
 const logger = require('../config/logger');
-const MinifyUrl = require('../models/minifyUrl.model');
-const { addMonths } = require('../utils/dateUtils');
+const MinifyUrlRepository = require('../repository/MinifyUrl.repo');
+const randomIdGenerator = require('../utils/randomIdGenerator')
 
 const createHashUrl = async (linkBody ,userId) => {
-  const { original_url: originalUrl } = linkBody;
-  const now = new Date();
-  const exprirationDate = addMonths(now, 6);
-  const hashData = `${originalUrl}${now.getMilliseconds()}`;
-  const shortLinkHash = shajs('sha256')
-    .update(hashData)
-    .digest('base64')
-    .match(/([a-zA-Z0-9]{7})/)[0];
-  const minifyUrlObj = {
-    minifyId: shortLinkHash,
-    originalLink: originalUrl,
-    creationTime: now.toISOString(),
-    expirationTime: exprirationDate.toISOString(),
+  linkBody = {
+    ...linkBody,
     userId: userId
-  };
-  await MinifyUrl.setShortenUrl(minifyUrlObj);
+  }
+  const minifyObject = randomIdGenerator(linkBody);
+  await MinifyUrlRepository.setShortenUrl(minifyObject);
   return minifyUrlObj;
 };
 
 const queryUrls = async (userId, filter, options) => {
-  const data = await MinifyUrl.queryUrls(userId, filter, options);
-  return data.Items;
+  const items = await MinifyUrlRepository.queryUrls(userId, filter, options);
+  return items;
 };
 
 const getUrl = async (minifyId = "", userId) => {
-  const data = await MinifyUrl.getUrl(minifyId, userId);
+  const data = await MinifyUrlRepository.getUrl(minifyId, userId);
   return data.Item;
 };
 
@@ -37,12 +26,12 @@ const updateOriginalUrl = async (linkParams, linkBody, userId) => {
   const {minify_id: minifyId} = linkParams;
   const { original_url: originalLink } = linkBody;
   
-  return (await MinifyUrl.updateOriginalUrl(minifyId, originalLink, userId));
+  return (await MinifyUrlRepository.updateOriginalUrl(minifyId, originalLink, userId));
 };
 
 const deleteUrl = async (linkParams, userId) => {
   const { minify_id: minifyId } = linkParams;
-  return (await MinifyUrl.deleteUrl(minifyId, userId));
+  return (await MinifyUrlRepository.deleteUrl(minifyId, userId));
 };
 
 module.exports = {

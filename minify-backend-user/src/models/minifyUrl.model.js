@@ -26,51 +26,42 @@ const createTable = async () => {
 };
 
 const setShortenUrl = async (minifyUrlObj) => {
+  const allowedKeys = ['minifyId', 'originalLink', 'creationTime' , 'expirationTime']
+  const sanitizedMinifyUrlObj = Object.keys(minifyUrlObj)
+  .filter(key => allowedKeys.includes(key))
+  .reduce((obj, currKey)=>{
+      return {
+        ...obj,
+        [currKey] : minifyUrlObj[currKey]
+      }
+  }, {});
   const params = {
     TableName: table,
-    Item: minifyUrlObj,
+    Item: sanitizedMinifyUrlObj,
   };
   return docClient.put(params).promise();
 };
 
-const getUrl = async (hash, userId) => {
-  console.log(userId);
+const getUrl = async (hash) => {
   const params = {
     TableName: table,
     Key: {
-      "minifyId": hash,
-      "userId": userId
+      "minifyId": hash
     },
   };
 
   return docClient.get(params).promise();
 };
 
-const queryUrls = async (userId, filter, options) => {
-  console.log(userId);
-  const params = {
-    TableName: table,
-    KeyConditionExpression: "#userId = :userId",
-    ExpressionAttributeNames:{
-        "#userId": "userId"
-    },
-    ExpressionAttributeValues: {
-        ":userId": userId
-    }
-};
-  return docClient.query(params).promise();
-};
-
-const updateOriginalUrl = async (hash, originalLink = '', userId) => {
+const updateOriginalUrl = async (hash, originalLink = '') => {
   console.log(userId);
   const params = {
     TableName: table,
     Key: {
-      "minifyId": hash,
-      "userId": userId
+      "minifyId": hash
     },
     UpdateExpression: 'set originalLink = :u',
-    ConditionExpression: 'attribute_exists(minifyId) and attribute_exists(userId)',
+    ConditionExpression: 'attribute_exists(minifyId)',
     ExpressionAttributeValues: {
       ':u': originalLink,
     },
@@ -80,12 +71,11 @@ const updateOriginalUrl = async (hash, originalLink = '', userId) => {
   return docClient.update(params).promise();
 };
 
-const deleteUrl = async (hash, userId) => {
+const deleteUrl = async (hash) => {
   const params = {
     TableName: table,
     Key: {
-      "minifyId": hash,
-      "userId": userId
+      "minifyId": hash
     },
     ConditionExpression: 'attribute_exists(minifyId) and attribute_exists(userId)',
   };

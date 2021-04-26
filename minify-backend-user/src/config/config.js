@@ -73,11 +73,9 @@ module.exports = {
       URL_TABLE: {
         TableName: 'URL',
         KeySchema: [
-          { AttributeName: 'userId', KeyType: 'HASH' },
           { AttributeName: 'minifyId', KeyType: 'RANGE' },
         ],
         AttributeDefinitions: [
-          { AttributeName: 'userId', AttributeType: 'S' },
           { AttributeName: 'minifyId', AttributeType: 'S' },
         ],
         ProvisionedThroughput: {
