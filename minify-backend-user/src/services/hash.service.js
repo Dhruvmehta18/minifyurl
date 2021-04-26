@@ -18,8 +18,8 @@ const queryUrls = async (userId, filter, options) => {
 };
 
 const getUrl = async (minifyId = "", userId) => {
-  const data = await MinifyUrlRepository.getUrl(minifyId, userId);
-  return data.Item;
+  const item = await MinifyUrlRepository.getUrl(minifyId, userId);
+  return item;
 };
 
 const updateOriginalUrl = async (linkParams, linkBody, userId) => {
