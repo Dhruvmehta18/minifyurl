@@ -72,12 +72,8 @@ module.exports = {
     dynamodb: {
       URL_TABLE: {
         TableName: 'URL',
-        KeySchema: [
-          { AttributeName: 'minifyId', KeyType: 'RANGE' },
-        ],
-        AttributeDefinitions: [
-          { AttributeName: 'minifyId', AttributeType: 'S' },
-        ],
+        KeySchema: [{ AttributeName: 'minifyId', KeyType: 'HASH' }],
+        AttributeDefinitions: [{ AttributeName: 'minifyId', AttributeType: 'S' }],
         ProvisionedThroughput: {
           ReadCapacityUnits: 5,
           WriteCapacityUnits: 5,

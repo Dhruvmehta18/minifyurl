@@ -7,7 +7,7 @@ const { hashService } = require('../services');
 const createUrl = catchAsync(async (req, res) => {
   const urlObject = await hashService.createHashUrl(req.body, req.userId);
   if (urlObject === undefined || urlObject === null) {
-    // TODO : change the error code to already created resources 
+    // TODO : change the error code to already created resources
     throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
   } else {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -19,7 +19,7 @@ const queryUrls = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await hashService.queryUrls(req.userId, filter, options);
-  if (result === undefined || result === null) { 
+  if (result === undefined || result === null) {
     throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
   } else {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -38,8 +38,8 @@ const getUrl = catchAsync(async (req, res) => {
 });
 
 const updateUrl = catchAsync(async (req, res) => {
-  const updateUrl = await hashService.updateOriginalUrl(req.params, req.body, req.userId);
-  if (updateUrl === undefined || updateUrl === null) {
+  const updateUrlResponse = await hashService.updateOriginalUrl(req.params, req.body, req.userId);
+  if (updateUrlResponse === undefined || updateUrlResponse === null) {
     throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
   } else {
     res.status(httpStatus.NO_CONTENT).send();

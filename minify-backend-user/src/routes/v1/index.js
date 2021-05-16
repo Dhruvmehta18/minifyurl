@@ -18,8 +18,8 @@ const defaultRoutes = [
   },
   {
     path: '/hash',
-    route: hashRoute
-  }
+    route: hashRoute,
+  },
 ];
 
 const devRoutes = [

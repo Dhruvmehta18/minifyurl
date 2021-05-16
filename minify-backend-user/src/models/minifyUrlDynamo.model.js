@@ -1,20 +1,25 @@
 const AWS = require('aws-sdk');
 const config = require('../config/config');
-const logger = require('../config/logger');
 
 const awsConfig = config.aws;
 const { region } = awsConfig.dynamodb;
 
-AWS.config.update({
+let extraConfig = {
   region,
-});
+};
 
 if (region === 'local-env' || config.env === 'development' || config.env === 'test') {
+  // noinspection HttpUrlsUsage : Because it is for testing and development environment only
   const endpoint = region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
-  AWS.config.update({
+  extraConfig = {
     endpoint,
-  });
+  };
 }
+
+AWS.config.update({
+  region,
+  ...extraConfig,
+});
 
 const DynamoDB = new AWS.DynamoDB();
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -26,15 +31,15 @@ const createTable = async () => {
 };
 
 const setShortenUrl = async (minifyUrlObj) => {
-  const allowedKeys = ['minifyId', 'originalLink', 'creationTime' , 'expirationTime']
+  const allowedKeys = ['minifyId', 'link', 'creationTime', 'expirationTime'];
   const sanitizedMinifyUrlObj = Object.keys(minifyUrlObj)
-  .filter(key => allowedKeys.includes(key))
-  .reduce((obj, currKey)=>{
+    .filter((key) => allowedKeys.includes(key))
+    .reduce((obj, currKey) => {
       return {
         ...obj,
-        [currKey] : minifyUrlObj[currKey]
-      }
-  }, {});
+        [currKey]: minifyUrlObj[currKey],
+      };
+    }, {});
   const params = {
     TableName: table,
     Item: sanitizedMinifyUrlObj,
@@ -46,24 +51,23 @@ const getUrl = async (hash) => {
   const params = {
     TableName: table,
     Key: {
-      "minifyId": hash
+      minifyId: hash,
     },
   };
 
   return docClient.get(params).promise();
 };
 
-const updateOriginalUrl = async (hash, originalLink = '') => {
-  console.log(userId);
+const updateOriginalUrl = async (hash, link = '') => {
   const params = {
     TableName: table,
     Key: {
-      "minifyId": hash
+      minifyId: hash,
     },
-    UpdateExpression: 'set originalLink = :u',
+    UpdateExpression: 'set link = :u',
     ConditionExpression: 'attribute_exists(minifyId)',
     ExpressionAttributeValues: {
-      ':u': originalLink,
+      ':u': link,
     },
     ReturnValues: 'UPDATED_NEW',
   };
@@ -75,21 +79,20 @@ const deleteUrl = async (hash) => {
   const params = {
     TableName: table,
     Key: {
-      "minifyId": hash
+      minifyId: hash,
     },
-    ConditionExpression: 'attribute_exists(minifyId) and attribute_exists(userId)',
+    ConditionExpression: 'attribute_exists(minifyId)',
   };
 
   return docClient.delete(params).promise();
 };
 
-const MinifyUrl = {
+const MinifyUrlDynamoModel = {
   createTable,
   setShortenUrl,
   getUrl,
-  queryUrls,
   updateOriginalUrl,
   deleteUrl,
 };
 
-module.exports = MinifyUrl;
+module.exports = MinifyUrlDynamoModel;

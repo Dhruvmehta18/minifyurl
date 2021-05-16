@@ -1,43 +1,47 @@
-const logger = require('../config/logger');
+const httpStatus = require('http-status');
 const MinifyUrlRepository = require('../repository/MinifyUrl.repo');
-const randomIdGenerator = require('../utils/randomIdGenerator')
+const minifyObjectGenerator = require('../utils/randomIdGenerator');
+const ApiError = require('../utils/ApiError');
 
-const createHashUrl = async (linkBody ,userId) => {
-  linkBody = {
-    ...linkBody,
-    userId: userId
+const createHashUrl = async (linkBody, userId) => {
+  if (await MinifyUrlRepository.isMinifyIdTaken(linkBody.minifyId)) {
+    return;
   }
-  const minifyObject = randomIdGenerator(linkBody);
-  await MinifyUrlRepository.setShortenUrl(minifyObject);
-  return minifyUrlObj;
+  const minifyObject = minifyObjectGenerator({
+    ...linkBody,
+    userId,
+  });
+  return MinifyUrlRepository.setShortenUrl(minifyObject);
 };
 
 const queryUrls = async (userId, filter, options) => {
-  const items = await MinifyUrlRepository.queryUrls(userId, filter, options);
-  return items;
+  return MinifyUrlRepository.queryUrls(userId, filter, options);
 };
 
-const getUrl = async (minifyId = "", userId) => {
-  const item = await MinifyUrlRepository.getUrl(minifyId, userId);
-  return item;
+const getUrl = async (minifyId = '', userId) => {
+  return MinifyUrlRepository.getUrl(minifyId, userId);
 };
 
-const updateOriginalUrl = async (linkParams, linkBody, userId) => {
-  const {minify_id: minifyId} = linkParams;
-  const { original_url: originalLink } = linkBody;
-  
-  return (await MinifyUrlRepository.updateOriginalUrl(minifyId, originalLink, userId));
+const updateUrl = async (linkParams, linkBody, userId) => {
+  const { minify_id: minifyId } = linkParams;
+
+  const link = await MinifyUrlRepository.getUrl(minifyId, userId);
+  if (!link) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'link not found');
+  }
+
+  return MinifyUrlRepository.updateOriginalUrl(link, linkBody);
 };
 
 const deleteUrl = async (linkParams, userId) => {
   const { minify_id: minifyId } = linkParams;
-  return (await MinifyUrlRepository.deleteUrl(minifyId, userId));
+  return MinifyUrlRepository.deleteUrl(minifyId, userId);
 };
 
 module.exports = {
   createHashUrl,
   getUrl,
   queryUrls,
-  updateOriginalUrl,
+  updateUrl,
   deleteUrl,
 };

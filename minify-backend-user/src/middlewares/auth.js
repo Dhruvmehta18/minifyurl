@@ -12,15 +12,13 @@ const auth = () => (req, _res, next) => {
     (err, heroResponse, body) => {
       if (!err && heroResponse.statusCode === httpStatus.OK) {
         const jsonBody = JSON.parse(body);
-        const userId = jsonBody.userId;
+        const { userId } = jsonBody;
         req.userId = userId;
         next();
+      } else if (err) {
+        next(err);
       } else {
-        if (err) {
-          next(err);
-        } else {
-          next(new ApiError(heroResponse.statusCode, httpStatus[`${heroResponse.statusCode}_MESSAGE`]));
-        }
+        next(new ApiError(heroResponse.statusCode, httpStatus[`${heroResponse.statusCode}_MESSAGE`]));
       }
     }
   );
