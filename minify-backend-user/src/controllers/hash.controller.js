@@ -7,7 +7,6 @@ const { hashService } = require('../services');
 const createUrl = catchAsync(async (req, res) => {
   const urlObject = await hashService.createHashUrl(req.body, req.userId);
   if (urlObject === undefined || urlObject === null) {
-    // TODO : change the error code to already created resources
     throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
   } else {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');

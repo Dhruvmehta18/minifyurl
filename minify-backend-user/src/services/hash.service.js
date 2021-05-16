@@ -5,7 +5,7 @@ const ApiError = require('../utils/ApiError');
 
 const createHashUrl = async (linkBody, userId) => {
   if (await MinifyUrlRepository.isMinifyIdTaken(linkBody.minifyId)) {
-    return;
+    throw new ApiError(httpStatus.CONFLICT, httpStatus['409_MESSAGE']);
   }
   const minifyObject = minifyObjectGenerator({
     ...linkBody,
