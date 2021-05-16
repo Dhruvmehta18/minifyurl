@@ -15,7 +15,7 @@ const createUrl = catchAsync(async (req, res) => {
 });
 
 const queryUrls = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role']);
+  const filter = pick(req.query, ['userId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await hashService.queryUrls(req.userId, filter, options);
   if (result === undefined || result === null) {
