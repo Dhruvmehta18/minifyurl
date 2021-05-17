@@ -7,7 +7,7 @@ const auth = () => (req, _res, next) => {
   request.post(
     {
       headers: { 'content-type': 'application/json', authorization: req.headers.authorization },
-      url: `${config.services.authService.endpoint}/checkToken`,
+      url: encodeURIComponent(`${config.services.authService.endpoint}/checkToken`),
     },
     (err, heroResponse, body) => {
       if (!err && heroResponse.statusCode === httpStatus.OK) {
