@@ -83,4 +83,7 @@ module.exports = {
       region: envVars.AWS_REGION,
     },
   },
+  bycrpt:{
+    SaltRounds: 8
+  }
 };
