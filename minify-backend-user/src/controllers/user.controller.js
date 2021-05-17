@@ -1,3 +1,5 @@
+// file deepcode ignore XSS: the sanitization is done by mongoose package of node
+
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
@@ -5,15 +7,14 @@ const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 
 const createUser = catchAsync(async (req, res) => {
-  const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send(user);
+  const user = await userService.createUser(req.body);res.status(httpStatus.CREATED).send(user);
 });
 
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await userService.queryUsers(filter, options);
-  res.send(result);
+  res.status(httpsStatus.OK).send(result);
 });
 
 const getUser = catchAsync(async (req, res) => {
@@ -21,12 +22,12 @@ const getUser = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  res.send(user);
+  res.status(httpsStatus.OK).send(user);
 });
 
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body);
-  res.send(user);
+  res.status(httpsStatus.NO_CONTENT).send(user);
 });
 
 const deleteUser = catchAsync(async (req, res) => {

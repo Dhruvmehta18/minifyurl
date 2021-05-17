@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
+const {bycrpt: bycrptConfig} = require('../config/config');
 
 const userSchema = mongoose.Schema(
   {
@@ -74,7 +75,8 @@ userSchema.methods.isPasswordMatch = async function (password) {
 userSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password')) {
-    user.password = await bcrypt.hash(user.password, 8);
+    const salt = await bcrypt.genSalt(bycrptConfig.SaltRounds);
+    user.password = await bcrypt.hash(user.password, salt);
   }
   next();
 });
