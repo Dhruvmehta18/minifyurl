@@ -10,6 +10,9 @@ export default function Home() {
       type: "column",
       backgroundColor: "#2b3d4b",
     },
+    title: {
+      text: ""
+    },
     xAxis: {
       type: "datetime",
       startOnTick: true,
@@ -29,11 +32,13 @@ export default function Home() {
       visible: false,
     },
     tooltip: {
-      tooltip: {
-        formatter: function () {
-          return "" + "" + "Time: " + Highcharts.dateFormat("%I:%M %p", this.x);
-        },
+      formatter: function () {
+        return Highcharts.dateFormat("%A, %b %e", this.x) + "<br/>" + "Total Clicks: <b>" + this.y + "</b>";
       },
+      nullFormatter: function(){ 
+        return Highcharts.dateFormat("%A, %b %e", this.x) + "<br/>" + "Total Clicks: 0" ;
+      },
+      outside: true
     },
     plotOptions: {
       column: {
