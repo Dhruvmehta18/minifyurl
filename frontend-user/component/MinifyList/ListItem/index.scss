@@ -1,0 +1,69 @@
+.linkListItemWrapper{
+    max-width: inherit;
+    cursor: pointer;
+    padding: 1.25rem 2.75rem 1.2rem;
+    border-top: 1px solid #d3d4d7;
+    position: relative;
+    text-decoration: none;
+    display: block;
+
+    .linkListItem{
+    display: flex;
+    flex-direction: row;
+    max-width: inherit;
+    cursor: pointer;
+
+    .checkboxContainer{
+      .itemCheckbox{
+        overflow: auto;
+        padding: .75rem 0 0 .75rem;
+        margin: 1.25rem .3rem 4rem -0.8rem;
+      }
+    }
+
+    .listItemData{
+      display: flex;
+      flex-direction: column;
+      max-width: inherit;
+      width: 90%;
+
+      .topLineData{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .secondLineData{
+        width: 100%;
+        display: block;
+        word-wrap: break-word;
+        margin-bottom: .75rem;
+        overflow: hidden;
+
+        .linkTitle{
+          width: 100%;
+          display: block;
+          flex-direction: row;
+          color: #36383b;
+          word-wrap: break-word;
+          height: 2rem;
+          font: 1rem "Proxima Nova";
+          -webkit-line-clamp: 1;
+          text-overflow: ellipsis;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      }
+
+      .bottomLineData{
+        display: flex;
+        flex-direction: row;
+
+        .shortLink{
+          font-size: small;
+        }
+      }
+    }
+  }
+  }
