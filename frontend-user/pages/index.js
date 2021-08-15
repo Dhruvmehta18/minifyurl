@@ -9,9 +9,10 @@ export default function Home() {
     chart: {
       type: "column",
       backgroundColor: "#2b3d4b",
+      height: 225
     },
     title: {
-      text: ""
+      text: "",
     },
     xAxis: {
       type: "datetime",
@@ -21,11 +22,11 @@ export default function Home() {
       tickColor: "#35637C",
       lineColor: "#35637C",
       dateTimeLabelFormats: {
-        day: "%b %e"
+        day: "%b %e",
       },
       labels: {
-        step: 7
-      }
+        step: 7,
+      },
     },
     yAxis: {
       min: 0,
@@ -33,12 +34,22 @@ export default function Home() {
     },
     tooltip: {
       formatter: function () {
-        return Highcharts.dateFormat("%A, %b %e", this.x) + "<br/>" + "Total Clicks: <b>" + this.y + "</b>";
+        return (
+          Highcharts.dateFormat("%A, %b %e", this.x) +
+          "<br/>" +
+          "Total Clicks: <b>" +
+          this.y +
+          "</b>"
+        );
       },
-      nullFormatter: function(){ 
-        return Highcharts.dateFormat("%A, %b %e", this.x) + "<br/>" + "Total Clicks: 0" ;
+      nullFormatter: function () {
+        return (
+          Highcharts.dateFormat("%A, %b %e", this.x) +
+          "<br/>" +
+          "Total Clicks: 0"
+        );
       },
-      outside: true
+      outside: true,
     },
     plotOptions: {
       column: {
@@ -48,7 +59,7 @@ export default function Home() {
     },
     series: [
       {
-        showInLegend: false,  
+        showInLegend: false,
         name: "",
         data: [
           [Date.UTC(2021, 3, 1, 0, 0, 0, 0), 0],
@@ -168,9 +179,14 @@ export default function Home() {
       </Head>
       <div className={styles.dashboardContainer}>
         {/*timeline charts*/}
-        <div>
+        <div className={styles.primaryLayoutWrapper}>
+            <div className={styles.performanceChartWrapper}>
+          <div className={styles.performaceChartContainer}>
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
+        </div>
+        </div>
+        
         {/*links*/}
         <div className={styles.linksWrapper}>
           <div className={styles.linksContainer}>
@@ -226,80 +242,82 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.linkData}>
-              <div className={styles.mainData}>
-                <div className={styles.mainDataTopRow}>
-                  <time dateTime="2021-10-27">
-                    CREATED OCT 27, 2020, 12:20 PM
-                  </time>
-                  <span>
-                    <span className={styles.infoWrapper_Divider}>|</span>
-                    <span className="item-detail--created-link">
-                      Dhruv Mehta
+              <div>
+                <div className={styles.mainData}>
+                  <div className={styles.mainDataTopRow}>
+                    <time dateTime="2021-10-27">
+                      CREATED OCT 27, 2020, 12:20 PM
+                    </time>
+                    <span>
+                      <span className={styles.infoWrapper_Divider}>|</span>
+                      <span className="item-detail--created-link">
+                        Dhruv Mehta
+                      </span>
                     </span>
-                  </span>
-                </div>
-                <div className={styles.mainDataSecondRow}>
-                  <h3 className={styles.linkDataTitle}>first</h3>
-                  <small>
-                    <a
-                      className={styles.linkDataOriginalLink}
-                      href="https://teams.microsoft.com/_#/school/tab::3717002657/19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2?threadId=19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2&messageId=classroom&replyChainId=1603798096840&ctx=channel"
-                      target="_blank"
-                    >
-                      https://teams.microsoft.com/_#/school/tab::3717002657/19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2?threadId=19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2&messageId=classroom&replyChainId=1603798096840&ctx=channel
-                    </a>
-                  </small>
-                </div>
-                <div className={styles.mainDataBottomRow}>
-                  <div className={styles.bottomRowItem}>
-                    <a
-                      href="https://bit.ly/first-35G"
-                      className={styles.shortLink}
-                    >
-                      bit.ly/first-35G
-                    </a>
                   </div>
-                  <div className={styles.bottomRowItem}>
-                    <button>Copy</button>
+                  <div className={styles.mainDataSecondRow}>
+                    <h3 className={styles.linkDataTitle}>first</h3>
+                    <small>
+                      <a
+                        className={styles.linkDataOriginalLink}
+                        href="https://teams.microsoft.com/_#/school/tab::3717002657/19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2?threadId=19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2&messageId=classroom&replyChainId=1603798096840&ctx=channel"
+                        target="_blank"
+                      >
+                        https://teams.microsoft.com/_#/school/tab::3717002657/19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2?threadId=19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2&messageId=classroom&replyChainId=1603798096840&ctx=channel
+                      </a>
+                    </small>
                   </div>
+                  <div className={styles.mainDataBottomRow}>
+                    <div className={styles.bottomRowItem}>
+                      <a
+                        href="https://bit.ly/first-35G"
+                        className={styles.shortLink}
+                      >
+                        bit.ly/first-35G
+                      </a>
+                    </div>
+                    <div className={styles.bottomRowItem}>
+                      <button>Copy</button>
+                    </div>
 
-                  <div className={styles.bottomRowItem}>
-                    <button>Share</button>
-                  </div>
+                    <div className={styles.bottomRowItem}>
+                      <button>Share</button>
+                    </div>
 
-                  <div className={styles.bottomRowItem}>
-                    <button>Edit</button>
-                  </div>
-                  <div className={styles.bottomRowItem}>
-                    <button>Redirect</button>
-                  </div>
+                    <div className={styles.bottomRowItem}>
+                      <button>Edit</button>
+                    </div>
+                    <div className={styles.bottomRowItem}>
+                      <button>Redirect</button>
+                    </div>
 
-                  <div className={styles.bottomRowItem}>
-                    <button>Qr Code</button>
+                    <div className={styles.bottomRowItem}>
+                      <button>Qr Code</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={styles.clicksData}>
-                <div className={styles.totalClicksDisplay}>
-                  <div className={styles.totalClicksTitle}>
-                    <span className={styles.totalClicksData}>10</span>
-                    <span className={styles.totalClicksIcon}>icon</span>
+                <div className={styles.clicksData}>
+                  <div className={styles.totalClicksDisplay}>
+                    <div className={styles.totalClicksTitle}>
+                      <span className={styles.totalClicksData}>10</span>
+                      <span className={styles.totalClicksIcon}>icon</span>
+                    </div>
+                    <div className={styles.totalClicksDescription}>
+                      <small>Total Click</small>
+                    </div>
                   </div>
-                  <div className={styles.totalClicksDescription}>
-                    <small>Total Click</small>
+                  <div>{/*  clicks time graph */}</div>
+                </div>
+                <div className={styles.referrerBlock}>
+                  <div className={styles.referrerTitle}>
+                    <h2>Referrer</h2>
                   </div>
-                </div>
-                <div>{/*  clicks time graph */}</div>
-              </div>
-              <div className={styles.referrerBlock}>
-                <div className={styles.referrerTitle}>
-                  <h2>Referrer</h2>
-                </div>
-                <div>
-                  <HighchartsReact
-                    highcharts={Highcharts}
-                    options={pieChartOptions}
-                  />
+                  <div>
+                    <HighchartsReact
+                      highcharts={Highcharts}
+                      options={pieChartOptions}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
