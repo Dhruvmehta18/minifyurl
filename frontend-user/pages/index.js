@@ -109,6 +109,17 @@ export default function Home() {
     title: {
       text: ""
     },
+    colors: [
+      "#435f72",
+      "#496e84",
+      "#4f7e96",
+      "#538fa8",
+      "#579fba",
+      "#5bb0cc",
+      "#5ec2de",
+      "#62d4ef",
+      "#65e6ff"
+    ],
     tooltip: {
       pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
     },
@@ -122,10 +133,15 @@ export default function Home() {
         allowPointSelect: true,
         cursor: "pointer",
         dataLabels: {
-          enabled: true,
-          format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+          enabled: false,
         },
+        showInLegend: true
       },
+    },
+    legend:{
+      layout:"proximate",
+      align: "right",
+      floating: true
     },
     series: [
       {
