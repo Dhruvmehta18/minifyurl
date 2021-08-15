@@ -274,7 +274,7 @@ export default function Home() {
                             href="https://bit.ly/first-35G"
                             className={styles.shortLink}
                           >
-                            bit.ly/first-35G
+                            bit.ly/<b>first-35G</b>
                           </a>
                         </div>
                       </div>
@@ -315,7 +315,7 @@ export default function Home() {
                         href="https://bit.ly/first-35G"
                         className={styles.shortLink}
                       >
-                        bit.ly/first-35G
+                        bit.ly/<b>first-35G</b>
                       </a>
                     </div>
                     <div className={styles.bottomRowItem}>
