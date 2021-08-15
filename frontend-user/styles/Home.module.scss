@@ -185,7 +185,7 @@ $primaryLayoutColor: #2b3e4b;
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          border-bottom: 1px solid black;
+          border-bottom: 1px solid rgba(#000000, 20%);
 
           .mainDataTopRow {
             font-size: 1.2rem;
@@ -196,6 +196,7 @@ $primaryLayoutColor: #2b3e4b;
             }
           }
           .mainDataSecondRow {
+            padding: 2rem 0;
             .linkDataTitle {
               font-size: 2rem;
               color: $primary-color;
@@ -239,18 +240,23 @@ $primaryLayoutColor: #2b3e4b;
         }
 
         .clicksData {
-          border-bottom: 1px solid black;
+          border-bottom: 1px solid rgba(#000000, 20%);
           margin-left: auto;
           margin-right: auto;
           max-width: 100%;
+          padding: 2rem 0;
           .totalClicksDisplay {
             .totalClicksTitle {
               .totalClicksData {
-                font-size: 8rem;
+                font-size: 3rem;
               }
             }
             .totalClicksDescription {
               font-size: 1.5rem;
+              text-transform: uppercase;
+              font-weight: 600;
+              letter-spacing:0.1rem;
+              color: lighten($color: #000000, $amount: 30)
             }
           }
         }

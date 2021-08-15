@@ -173,6 +173,15 @@ export default function Home() {
       },
     ],
   };
+
+  const linkData = {
+    ...options,
+    chart: {
+      ...options.chart,
+      backgroundColor: "#fff",
+    },
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -323,7 +332,12 @@ export default function Home() {
                       <small>Total Click</small>
                     </div>
                   </div>
-                  <div>{/*  clicks time graph */}</div>
+                  <div>
+                    <HighchartsReact
+                      highcharts={Highcharts}
+                      options={linkData}  
+                    />
+                  </div>
                 </div>
                 <div className={styles.referrerBlock}>
                   <div className={styles.referrerTitle}>
