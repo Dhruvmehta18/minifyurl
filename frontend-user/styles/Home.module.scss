@@ -23,6 +23,8 @@ $primaryLayoutColor: #2b3e4b;
 
   .primaryLayoutWrapper {
     background-color: $primaryLayoutColor;
+    position: relative;
+    padding: 1.5rem 3rem 0;
 
     .performanceChartWrapper {
       max-height: 25rem;
@@ -30,10 +32,45 @@ $primaryLayoutColor: #2b3e4b;
       width: 100%;
       overflow: hidden;
       position: relative;
-      .performaceChartContainer {
-        overflow: visible;
-        width: calc(100% - 20rem);
-        float: right;
+      display: inline-flex;
+      flex-direction: column;
+
+      .primaryLayoutBottomWrapper{
+        display: flex;
+        width: inherit;
+      }
+    }
+
+    .performaceChartContainer {
+      overflow: visible;
+      width: calc(100% - 20rem);
+      float: right;
+      
+    }
+
+    .leftPerformanceContainer {
+      display: flex;
+      flex-direction: row;
+      width: 20rem;
+
+      .leftPerformanceBottomContainer {
+        margin: 2rem 2rem 2rem 0;
+        color: #fff;
+
+        .totalNumbersItem{
+          padding: 0.4rem 0;
+          .totalNumbers {
+            font-size: 4rem;
+          }
+
+          .totalNumbersLabel {
+            opacity: 0.55;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.1rem;
+          }
+        }
+        
       }
     }
   }

@@ -1,6 +1,8 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 
+import OrbRadio from "../component/OrdRadio";
+
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -9,7 +11,7 @@ export default function Home() {
     chart: {
       type: "column",
       backgroundColor: "#2b3d4b",
-      height: 225
+      height: 225,
     },
     title: {
       text: "",
@@ -180,13 +182,28 @@ export default function Home() {
       <div className={styles.dashboardContainer}>
         {/*timeline charts*/}
         <div className={styles.primaryLayoutWrapper}>
-            <div className={styles.performanceChartWrapper}>
-          <div className={styles.performaceChartContainer}>
-          <HighchartsReact highcharts={Highcharts} options={options} />
+          <div className={styles.performanceChartWrapper}>
+            <OrbRadio />
+            <div className={styles.primaryLayoutBottomWrapper}>
+              <div className={styles.leftPerformanceContainer}>
+                <div className={styles.leftPerformanceBottomContainer}>
+                  <div className={styles.totalNumbersItem}>
+                    <div className={styles.totalNumbers}>10</div>
+                    <div className={styles.totalNumbersLabel}>Total Clicks</div>
+                  </div>
+                  <div className={styles.totalNumbersItem}>
+                    <div className={styles.totalNumbers}>6</div>
+                    <div className={styles.totalNumbersLabel}>Referrers</div>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.performaceChartContainer}>
+                <HighchartsReact highcharts={Highcharts} options={options} />
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
-        
+
         {/*links*/}
         <div className={styles.linksWrapper}>
           <div className={styles.linksContainer}>
