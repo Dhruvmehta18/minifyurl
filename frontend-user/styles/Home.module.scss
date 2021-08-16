@@ -1,10 +1,12 @@
 $primary-color: #ee6123;
 $primaryLayoutColor: #2b3e4b;
+$backgroundColor: #2b3e4b;
 
 .container {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: $backgroundColor;
 }
 
 .code {
@@ -21,6 +23,54 @@ $primaryLayoutColor: #2b3e4b;
   flex-direction: column;
   height: inherit;
 
+  .navigation {
+    color: #ffffff;
+    background-color: darken($color: $backgroundColor, $amount: 10);
+    font-size: 2rem;
+    padding: 1.2rem;
+
+    .navigationWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .navItem:nth-child(n){
+        margin-right: 1rem;
+      }
+
+      .brandContainer {
+        .minifyBrand {
+          font-size: 3.2rem;
+          font-weight: 900;
+          letter-spacing: 0.25rem;
+        }
+      }
+
+      .createButtonContainer {
+        button.createButton {
+          padding: 1rem;
+          border-radius: 2rem;
+          background-color: $primary-color;
+          color: #ffffff;
+          font-weight: 700;
+          letter-spacing: 0.1rem;
+          text-transform: uppercase;
+          outline: none;
+          border: none;
+          cursor: pointer;
+          transition: background-color .1s ease;
+          &:hover{
+            background-color: darken($color: $primary-color, $amount: 5);
+          }
+
+          &:active{
+            background-color: darken($color: $primary-color, $amount: 10);
+          }
+        }
+      }
+    }
+  }
+
   .primaryLayoutWrapper {
     background-color: $primaryLayoutColor;
     position: relative;
@@ -35,7 +85,7 @@ $primaryLayoutColor: #2b3e4b;
       display: inline-flex;
       flex-direction: column;
 
-      .primaryLayoutBottomWrapper{
+      .primaryLayoutBottomWrapper {
         display: flex;
         width: inherit;
       }
@@ -45,7 +95,6 @@ $primaryLayoutColor: #2b3e4b;
       overflow: visible;
       width: calc(100% - 20rem);
       float: right;
-      
     }
 
     .leftPerformanceContainer {
@@ -57,7 +106,7 @@ $primaryLayoutColor: #2b3e4b;
         margin: 2rem 2rem 2rem 0;
         color: #fff;
 
-        .totalNumbersItem{
+        .totalNumbersItem {
           padding: 0.4rem 0;
           .totalNumbers {
             font-size: 4rem;
@@ -70,7 +119,6 @@ $primaryLayoutColor: #2b3e4b;
             letter-spacing: 0.1rem;
           }
         }
-        
       }
     }
   }
@@ -253,8 +301,8 @@ $primaryLayoutColor: #2b3e4b;
               font-size: 1.5rem;
               text-transform: uppercase;
               font-weight: 600;
-              letter-spacing:0.1rem;
-              color: lighten($color: #000000, $amount: 30)
+              letter-spacing: 0.1rem;
+              color: lighten($color: #000000, $amount: 30);
             }
           }
         }

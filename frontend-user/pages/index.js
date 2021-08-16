@@ -107,7 +107,7 @@ export default function Home() {
       type: "pie",
     },
     title: {
-      text: ""
+      text: "",
     },
     colors: [
       "#435f72",
@@ -118,7 +118,7 @@ export default function Home() {
       "#5bb0cc",
       "#5ec2de",
       "#62d4ef",
-      "#65e6ff"
+      "#65e6ff",
     ],
     tooltip: {
       pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
@@ -135,13 +135,13 @@ export default function Home() {
         dataLabels: {
           enabled: false,
         },
-        showInLegend: true
+        showInLegend: true,
       },
     },
-    legend:{
-      layout:"proximate",
+    legend: {
+      layout: "proximate",
       align: "right",
-      floating: true
+      floating: true,
     },
     series: [
       {
@@ -205,7 +205,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.dashboardContainer}>
-        {/*timeline charts*/}
+        <nav className={styles.navigation}>
+          <div className={styles.navigationWrapper}>
+            <div className={styles.navItem}>
+              <a aria-label="home" className={styles.brandContainer} href="/">
+                <span className={styles.minifyBrand}>Minify</span>
+              </a>
+            </div>
+            
+            <div className={styles.navItem}>{/* search */}</div>
+            <div className={[styles.navItem, styles.createButtonContainer].join(' ')}>
+              <button type="button" className={styles.createButton}>
+                create
+              </button>
+            </div>
+          </div>
+        </nav>
         <div className={styles.primaryLayoutWrapper}>
           <div className={styles.performanceChartWrapper}>
             <OrbRadio />
@@ -222,6 +237,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+              {/*timeline charts*/}
               <div className={styles.performaceChartContainer}>
                 <HighchartsReact highcharts={Highcharts} options={options} />
               </div>
@@ -351,7 +367,7 @@ export default function Home() {
                   <div>
                     <HighchartsReact
                       highcharts={Highcharts}
-                      options={linkData}  
+                      options={linkData}
                     />
                   </div>
                 </div>
