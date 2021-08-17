@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 
+import ListItem from "../component/MinifyList/ListItem";
 import OrbRadio from "../component/OrdRadio";
 
 import Highcharts from "highcharts";
@@ -251,52 +252,8 @@ export default function Home() {
             <div className={styles.linksList}>
               <div>
                 {[...Array(15)].map((x, i) => (
-                  <div className={styles.linkListItemWrapper} key={i}>
-                    <div className={styles.linkListItem}>
-                      <div className={styles.checkboxContainer}>
-                        <span className={styles.itemCheckbox}>
-                          <div className="checkbox--SMALL">
-                            <input
-                              id="3wUECjG"
-                              type="checkbox"
-                              className="checkbox--input"
-                            />
-                            <label
-                              tabIndex="0"
-                              htmlFor="3wUECjG"
-                              className="checkmark-icon checkbox-icon"
-                            ></label>
-                          </div>
-                        </span>
-                      </div>
-                      <div className={styles.listItemData}>
-                        <div className={styles.topLineData}>
-                          <time
-                            className={styles.linkCreatedAt}
-                            dateTime="2020-02-26"
-                          >
-                            Feb 16
-                          </time>
-                          <div className={styles.iconTags}>tags</div>
-                        </div>
-                        <div className={styles.secondLineData}>
-                          <div className={styles.linkTitle}>
-                            Designing a URL Shortening service like TinyURL -
-                            Grokking the System Design Interview
-                          </div>
-                        </div>
-                        <div className={styles.bottomLineData}>
-                          <a
-                            href="https://bit.ly/first-35G"
-                            className={styles.shortLink}
-                          >
-                            bit.ly/<b>first-35G</b>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                    <ListItem key={i}/>
+                  ))}
               </div>
             </div>
             <div className={styles.linkData}>
