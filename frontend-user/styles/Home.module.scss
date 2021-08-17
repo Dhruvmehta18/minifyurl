@@ -1,4 +1,3 @@
-
 @import "./global_imports";
 
 .container {
@@ -33,7 +32,7 @@
       align-items: center;
       justify-content: space-between;
 
-      .navItem:nth-child(n){
+      .navItem:nth-child(n) {
         margin-right: 1rem;
       }
 
@@ -57,12 +56,12 @@
           outline: none;
           border: none;
           cursor: pointer;
-          transition: background-color .1s ease;
-          &:hover{
+          transition: background-color 0.1s ease;
+          &:hover {
             background-color: darken($color: $primary-color, $amount: 5);
           }
 
-          &:active{
+          &:active {
             background-color: darken($color: $primary-color, $amount: 10);
           }
         }
@@ -133,88 +132,6 @@
       flex-direction: row;
       min-height: 0;
       width: 100%;
-
-      .linksList {
-        display: flex;
-        flex-direction: column;
-        flex: 2;
-        overflow-y: auto;
-        position: relative;
-        background-color: #f5f6f7;
-        padding-top: 1.5rem;
-
-        .linkListItemWrapper {
-          max-width: inherit;
-          cursor: pointer;
-          padding: 1.25rem 2.75rem 1.2rem 1.1rem;
-          border-top: 1px solid #d3d4d7;
-          position: relative;
-          text-decoration: none;
-          display: block;
-
-          .linkListItem {
-            display: flex;
-            flex-direction: row;
-            max-width: inherit;
-            cursor: pointer;
-
-            .checkboxContainer {
-              margin-right: 1rem;
-              .itemCheckbox {
-                overflow: auto;
-                padding: 0.75rem 0 0 0.75rem;
-                margin: 1.25rem 0.3rem 4rem -0.8rem;
-              }
-            }
-
-            .listItemData {
-              display: flex;
-              flex-direction: column;
-              max-width: inherit;
-              width: 95%;
-
-              .topLineData {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-              }
-
-              .secondLineData {
-                width: 100%;
-                display: block;
-                word-wrap: break-word;
-                margin-bottom: 0.75rem;
-                overflow: hidden;
-
-                .linkTitle {
-                  width: 100%;
-                  display: block;
-                  flex-direction: row;
-                  color: #36383b;
-                  word-wrap: break-word;
-                  height: 2rem;
-                  font-size: 1.6rem;
-                  -webkit-line-clamp: 1;
-                  text-overflow: ellipsis;
-                  -webkit-box-orient: vertical;
-                  overflow: hidden;
-                  white-space: nowrap;
-                }
-              }
-
-              .bottomLineData {
-                display: flex;
-                flex-direction: row;
-
-                .shortLink {
-                  color: $primary-color;
-                  font-size: small;
-                }
-              }
-            }
-          }
-        }
-      }
 
       .linkData {
         flex: 4;

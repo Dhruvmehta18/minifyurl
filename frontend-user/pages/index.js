@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 
-import ListItem from "../component/MinifyList/ListItem";
+import MinifyList from "../component/MinifyList";
 import OrbRadio from "../component/OrdRadio";
 
 import Highcharts from "highcharts";
@@ -249,13 +249,7 @@ export default function Home() {
         {/*links*/}
         <div className={styles.linksWrapper}>
           <div className={styles.linksContainer}>
-            <div className={styles.linksList}>
-              <div>
-                {[...Array(15)].map((x, i) => (
-                    <ListItem key={i}/>
-                  ))}
-              </div>
-            </div>
+            <MinifyList />
             <div className={styles.linkData}>
               <div>
                 <div className={styles.mainData}>
