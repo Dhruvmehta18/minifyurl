@@ -16,6 +16,27 @@
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
+.createButtonBasic {
+  padding: 1rem;
+  border-radius: 2rem;
+  background-color: $primary-color;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  &:hover {
+    background-color: darken($color: $primary-color, $amount: 5);
+  }
+
+  &:active {
+    background-color: darken($color: $primary-color, $amount: 10);
+  }
+}
+
 .sideDrawerMain {
   width: 100vw;
   height: 100vh;
@@ -42,7 +63,7 @@
     z-index: ($sideDrawerZindex + 1);
     transition: all 0.2s ease-out;
   }
-  
+
   &.open {
     z-index: $sideDrawerZindex;
     .sideOverlay {
@@ -50,18 +71,89 @@
     }
 
     .sideDrawer {
-      right: 0
+      right: 0;
     }
   }
 
-  &.close{
+  &.close {
     z-index: -1;
     .sideOverlay {
       background-color: rgba($color: #000000, $alpha: 0);
     }
 
-    .sideDrawer { 
+    .sideDrawer {
       right: ($sideDrawerWidth * -1);
+    }
+  }
+}
+
+.sideDrawerContainer {
+  display: inline-flex;
+  flex-direction: column;
+  width: inherit;
+  height: inherit;
+  padding: 0;
+  margin: 0;
+
+  .sideDrawerHeader {
+    width: inherit;
+    padding: 0 1rem;
+    background-color: $primaryLayoutColor;
+    color: white;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .closeIcon {
+      font-size: 3rem;
+      cursor: pointer;
+    }
+  }
+
+  .sideDrawerContent {
+    padding: 1rem;
+    width: inherit;
+    flex: 1;
+
+    .input {
+      border: 1px solid $primary-color;
+      display: inline-flex;
+      flex-direction: column;
+      width: 100%;
+      border-radius: 0.5rem;
+      
+
+      .inputLabel {
+        font-size: 1rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        padding: 0.5rem 0.5rem 0 0.5rem;
+      }
+
+      textarea {
+        outline: 0;
+        overflow: hidden;
+        border: none;
+        background-color: transparent;
+        height: 4rem;
+        font-size: 1.5rem;
+        padding: 0 0 1rem 0.5rem;
+        margin: 0;
+        max-width: 100%;
+        min-width: 100%;
+        color: #3a3b3d;
+      }
+    }
+  }
+
+  .sideDrawerBottom {
+    align-self: bottom;
+    padding: 1rem;
+    border-top: $simpleBorderLine;
+
+    .createButtonLink {
+      @extend .createButtonBasic;
+      width: 100%;
     }
   }
 }
@@ -96,24 +188,7 @@
 
       .createButtonContainer {
         button.createButton {
-          padding: 1rem;
-          border-radius: 2rem;
-          background-color: $primary-color;
-          color: #ffffff;
-          font-weight: 700;
-          letter-spacing: 0.1rem;
-          text-transform: uppercase;
-          outline: none;
-          border: none;
-          cursor: pointer;
-          transition: background-color 0.1s ease;
-          &:hover {
-            background-color: darken($color: $primary-color, $amount: 5);
-          }
-
-          &:active {
-            background-color: darken($color: $primary-color, $amount: 10);
-          }
+          @extend .createButtonBasic;
         }
       }
     }
@@ -252,7 +327,7 @@
         }
 
         .clicksData {
-          border-bottom: 1px solid rgba(#000000, 20%);
+          border-bottom: $simpleBorderLine;
           margin-left: auto;
           margin-right: auto;
           max-width: 100%;

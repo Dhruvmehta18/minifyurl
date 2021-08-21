@@ -203,16 +203,16 @@ export default function Home() {
   const [isSideDrawerOpen, changeSideDrawerOpen] = useState(false);
 
   const toggleSideDrawerOpen = () => {
-    changeSideDrawerOpen((prevState)=> !prevState);
-  }
+    changeSideDrawerOpen((prevState) => !prevState);
+  };
 
   const onCreateButtonClicked = () => {
     toggleSideDrawerOpen();
-  }
+  };
 
   const onOverlayClicked = () => {
     toggleSideDrawerOpen();
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -228,10 +228,18 @@ export default function Home() {
                 <span className={styles.minifyBrand}>Minify</span>
               </a>
             </div>
-            
+
             <div className={styles.navItem}>{/* search */}</div>
-            <div className={[styles.navItem, styles.createButtonContainer].join(' ')}>
-              <button type="button" className={styles.createButton} onClick={onCreateButtonClicked}>
+            <div
+              className={[styles.navItem, styles.createButtonContainer].join(
+                " "
+              )}
+            >
+              <button
+                type="button"
+                className={styles.createButton}
+                onClick={onCreateButtonClicked}
+              >
                 create
               </button>
             </div>
@@ -353,10 +361,39 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className={[styles.sideDrawerMain, isSideDrawerOpen?styles.open: styles.close].join(' ')}>
+      <div
+        className={[
+          styles.sideDrawerMain,
+          isSideDrawerOpen ? styles.open : styles.close,
+        ].join(" ")}
+      >
         <div className={styles.sideOverlay} onClick={onOverlayClicked}></div>
         <div className={styles.sideDrawer}>
+          <div className={styles.sideDrawerContainer}>
+            <div className={styles.sideDrawerHeader}>
+              <h2>Create Link</h2>
+              <span className={styles.closeIcon} 
+                  onClick={toggleSideDrawerOpen}>x</span>
+            </div>
 
+            <div className={styles.sideDrawerContent}>
+              <div className={styles.input}>
+                <label className={styles.inputLabel}>Enter Long Url</label>
+                <textarea className={styles.inputText} rows="2" maxLength={6144} autoComplete="off"/>
+              </div>
+            </div>
+
+            <div className={styles.sideDrawerBottom}>
+              <div>
+                <button
+                  type="button"
+                  className={styles.createButtonLink}
+                >
+                  create
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
