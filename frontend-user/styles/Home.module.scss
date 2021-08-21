@@ -16,6 +16,56 @@
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
+.sideDrawerMain {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+  .sideOverlay {
+    background-color: rgba($color: #000000, $alpha: 0);
+    width: inherit;
+    height: inherit;
+    z-index: inherit;
+    transition: all 0.2s ease-out;
+  }
+
+  .sideDrawer {
+    width: $sideDrawerWidth;
+    height: inherit;
+    position: absolute;
+    top: 0;
+    right: ($sideDrawerWidth * -1);
+    background: white;
+    z-index: ($sideDrawerZindex + 1);
+    transition: all 0.2s ease-out;
+  }
+  
+  &.open {
+    z-index: $sideDrawerZindex;
+    .sideOverlay {
+      background-color: rgba($color: #000000, $alpha: 0.4);
+    }
+
+    .sideDrawer {
+      right: 0
+    }
+  }
+
+  &.close{
+    z-index: -1;
+    .sideOverlay {
+      background-color: rgba($color: #000000, $alpha: 0);
+    }
+
+    .sideDrawer { 
+      right: ($sideDrawerWidth * -1);
+    }
+  }
+}
+
 .dashboardContainer {
   display: flex;
   flex-direction: column;

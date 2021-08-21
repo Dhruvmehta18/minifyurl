@@ -6,6 +6,7 @@ import OrbRadio from "../component/OrdRadio";
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { useState } from "react";
 
 export default function Home() {
   const options = {
@@ -199,6 +200,20 @@ export default function Home() {
     },
   };
 
+  const [isSideDrawerOpen, changeSideDrawerOpen] = useState(false);
+
+  const toggleSideDrawerOpen = () => {
+    changeSideDrawerOpen((prevState)=> !prevState);
+  }
+
+  const onCreateButtonClicked = () => {
+    toggleSideDrawerOpen();
+  }
+
+  const onOverlayClicked = () => {
+    toggleSideDrawerOpen();
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -216,7 +231,7 @@ export default function Home() {
             
             <div className={styles.navItem}>{/* search */}</div>
             <div className={[styles.navItem, styles.createButtonContainer].join(' ')}>
-              <button type="button" className={styles.createButton}>
+              <button type="button" className={styles.createButton} onClick={onCreateButtonClicked}>
                 create
               </button>
             </div>
@@ -336,6 +351,12 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className={[styles.sideDrawerMain, isSideDrawerOpen?styles.open: styles.close].join(' ')}>
+        <div className={styles.sideOverlay} onClick={onOverlayClicked}></div>
+        <div className={styles.sideDrawer}>
+
         </div>
       </div>
     </div>
