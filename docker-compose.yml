@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  frontend-user:
+    build: .
+    image: frontend-user
+    ports:
+      - '3000:3000'
+    working_dir: /frontend-user/
+    volumes:
+      - ./frontend-user:/frontend-user
+      - /frontend-user/node_modules
+
