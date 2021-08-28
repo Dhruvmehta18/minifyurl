@@ -1,15 +1,13 @@
-FROM node:alpine
+FROM node:14.16.0
 
-RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
+RUN mkdir -p /usr/src/minify-backend-user
 
-WORKDIR /usr/src/node-app
+WORKDIR /usr/src/minify-backend-user
 
 COPY package.json yarn.lock ./
 
-USER node
-
 RUN yarn install --pure-lockfile
 
-COPY --chown=node:node . .
+COPY . .
 
 EXPOSE 3000

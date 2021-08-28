@@ -1,6 +1,55 @@
 version: "3.7"
 
 services:
+  
+  dynamodb-local-redirect:
+    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local-redirect
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+    networks:
+      - dynamodb-network
+
+  minify-backend-user:
+    container_name: minify-url-backend-user-dev
+    depends_on: 
+      - dynamodb-local-redirect
+    environment: 
+        - DYNAMODB_URL=http://dynamodb-local-redirect:8000
+        - AWS_REGION=us-east-2
+    ports:
+      - '3003:3000'
+    command: yarn dev -L
+
+  minify-auth-service:
+    container_name: minify-url-auth-service-dev
+    ports:
+      - '3002:3002'
+    command: yarn dev -L
+
+  minify-redirect-app:
+    depends_on:
+        - dynamodb-local-redirect
+    container_name: minify-url-redirect-dev-nodejs
+    ports:
+      - '3001:3001'
+    environment: 
+        - DYNAMODB_URL=http://dynamodb-local-redirect:8000
+        - AWS_REGION=us-east-2
+    networks:
+      - dynamodb-network
+    command: yarn dev -L
+  
   frontend-user:
     container_name: minify-url-frontend-user-dev
+    ports:
+      - '3000:3000'
     command: yarn dev
+
+networks:
+  dynamodb-network:
+    driver: bridge

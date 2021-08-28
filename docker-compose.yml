@@ -2,12 +2,56 @@ version: "3.7"
 
 services:
   frontend-user:
-    build: .
+    build: ./frontend-user
     image: frontend-user
+    depends_on:
+      - minify-redirect-app
     ports:
       - '3000:3000'
-    working_dir: /frontend-user/
+    working_dir: /usr/src/frontend-user/
     volumes:
-      - ./frontend-user:/frontend-user
-      - /frontend-user/node_modules
+      - ./frontend-user:/usr/src/frontend-user
+      - /usr/src/frontend-user/node_modules
+    networks:
+      - node-network
+  
+  minify-redirect-app:
+    build: ./minify-redirect-user
+    image: minify-redirect-app
+    depends_on: 
+      - minify-backend-user
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./minify-redirect-user:/usr/src/minify-redirect-user
+      - /usr/src/minify-redirect-user/node_modules
+    networks:
+      - node-network
 
+  minify-backend-user:
+    build: ./minify-backend-user
+    image: minify-backend-user
+    depends_on: 
+      - minify-auth-service
+    ports:
+      - '3003:3000'
+    volumes:
+      - ./minify-redirect-user:/usr/src/minify-backend-user
+      - /usr/src/minify-backend-user/node_modules
+    networks:
+      - node-network
+
+  minify-auth-service:
+    build: ./minify-auth-service
+    image: minify-auth-service
+    ports:
+      - '3002:3002'
+    volumes:
+      - ./minify-redirect-user:/usr/src/minify-auth-service
+      - /usr/src/minify-auth-service/node_modules
+    networks:
+      - node-network
+
+networks:
+  node-network:
+    driver: bridge
