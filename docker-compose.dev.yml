@@ -23,6 +23,8 @@ services:
         - AWS_REGION=us-east-2
     ports:
       - '3003:3000'
+    networks:
+      - dynamodb-network
     command: yarn dev -L
 
   minify-auth-service:

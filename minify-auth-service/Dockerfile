@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:14.16.0
 
 RUN mkdir -p /usr/src/minify-auth-service
 

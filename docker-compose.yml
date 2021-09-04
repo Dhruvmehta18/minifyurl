@@ -36,7 +36,7 @@ services:
     ports:
       - '3003:3000'
     volumes:
-      - ./minify-redirect-user:/usr/src/minify-backend-user
+      - ./minify-backend-user:/usr/src/minify-backend-user
       - /usr/src/minify-backend-user/node_modules
     networks:
       - node-network
@@ -47,7 +47,7 @@ services:
     ports:
       - '3002:3002'
     volumes:
-      - ./minify-redirect-user:/usr/src/minify-auth-service
+      - ./minify-auth-service:/usr/src/minify-auth-service
       - /usr/src/minify-auth-service/node_modules
     networks:
       - node-network
