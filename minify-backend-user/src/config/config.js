@@ -52,11 +52,6 @@ module.exports = {
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
     resetPasswordExpirationMinutes: 10,
   },
-  services: {
-    authService: {
-      endpoint: 'http://localhost:3002/v1/users',
-    },
-  },
   email: {
     smtp: {
       host: envVars.SMTP_HOST,
@@ -83,7 +78,7 @@ module.exports = {
       region: envVars.AWS_REGION,
     },
   },
-  bycrpt:{
-    SaltRounds: 8
-  }
+  bycrpt: {
+    SaltRounds: 8,
+  },
 };

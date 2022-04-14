@@ -1,8 +1,9 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 
-import MinifyList from "../component/MinifyList";
 import OrbRadio from "../component/OrdRadio";
+import SideDrawer from "../component/SideDrawer";
+import LinksContainer from "../component/LinksContainer";
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -101,119 +102,16 @@ export default function Home() {
       },
     ],
   };
-  const pieChartOptions = {
-    chart: {
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: false,
-      type: "pie",
-    },
-    title: {
-      text: "",
-    },
-    colors: [
-      "#435f72",
-      "#496e84",
-      "#4f7e96",
-      "#538fa8",
-      "#579fba",
-      "#5bb0cc",
-      "#5ec2de",
-      "#62d4ef",
-      "#65e6ff",
-    ],
-    tooltip: {
-      pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
-    },
-    accessibility: {
-      point: {
-        valueSuffix: "%",
-      },
-    },
-    plotOptions: {
-      pie: {
-        allowPointSelect: true,
-        cursor: "pointer",
-        dataLabels: {
-          enabled: false,
-        },
-        showInLegend: true,
-      },
-    },
-    legend: {
-      layout: "proximate",
-      align: "right",
-      floating: true,
-    },
-    series: [
-      {
-        name: "Brands",
-        colorByPoint: true,
-        innerSize: "60%",
-        data: [
-          {
-            name: "Chrome",
-            y: 61.41,
-          },
-          {
-            name: "Internet Explorer",
-            y: 11.84,
-          },
-          {
-            name: "Firefox",
-            y: 10.85,
-          },
-          {
-            name: "Edge",
-            y: 4.67,
-          },
-          {
-            name: "Safari",
-            y: 4.18,
-          },
-          {
-            name: "Sogou Explorer",
-            y: 1.64,
-          },
-          {
-            name: "Opera",
-            y: 1.6,
-          },
-          {
-            name: "QQ",
-            y: 1.2,
-          },
-          {
-            name: "Other",
-            y: 2.61,
-          },
-        ],
-      },
-    ],
-  };
-
-  const linkData = {
-    ...options,
-    chart: {
-      ...options.chart,
-      backgroundColor: "#fff",
-    },
-  };
 
   const [isSideDrawerOpen, changeSideDrawerOpen] = useState(false);
 
-  const toggleSideDrawerOpen = () => {
-    changeSideDrawerOpen((prevState) => !prevState);
+  const onSideDrawerClosed = () => {
+    changeSideDrawerOpen(false);
   };
 
   const onCreateButtonClicked = () => {
-    toggleSideDrawerOpen();
+    changeSideDrawerOpen(true);
   };
-
-  const onOverlayClicked = () => {
-    toggleSideDrawerOpen();
-  };
-
   return (
     <div className={styles.container}>
       <Head>
@@ -270,132 +168,12 @@ export default function Home() {
         </div>
 
         {/*links*/}
-        <div className={styles.linksWrapper}>
-          <div className={styles.linksContainer}>
-            <MinifyList />
-            <div className={styles.linkData}>
-              <div>
-                <div className={styles.mainData}>
-                  <div className={styles.mainDataTopRow}>
-                    <time dateTime="2021-10-27">
-                      CREATED OCT 27, 2020, 12:20 PM
-                    </time>
-                    <span>
-                      <span className={styles.infoWrapper_Divider}>|</span>
-                      <span className="item-detail--created-link">
-                        Dhruv Mehta
-                      </span>
-                    </span>
-                  </div>
-                  <div className={styles.mainDataSecondRow}>
-                    <h3 className={styles.linkDataTitle}>first</h3>
-                    <small>
-                      <a
-                        className={styles.linkDataOriginalLink}
-                        href="https://teams.microsoft.com/_#/school/tab::3717002657/19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2?threadId=19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2&messageId=classroom&replyChainId=1603798096840&ctx=channel"
-                        target="_blank"
-                      >
-                        https://teams.microsoft.com/_#/school/tab::3717002657/19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2?threadId=19:5b8dd51c766e45c3968b7062d3a58878@thread.tacv2&messageId=classroom&replyChainId=1603798096840&ctx=channel
-                      </a>
-                    </small>
-                  </div>
-                  <div className={styles.mainDataBottomRow}>
-                    <div className={styles.bottomRowItem}>
-                      <a
-                        href="https://bit.ly/first-35G"
-                        className={styles.shortLink}
-                      >
-                        bit.ly/<b>first-35G</b>
-                      </a>
-                    </div>
-                    <div className={styles.bottomRowItem}>
-                      <button>Copy</button>
-                    </div>
-
-                    <div className={styles.bottomRowItem}>
-                      <button>Share</button>
-                    </div>
-
-                    <div className={styles.bottomRowItem}>
-                      <button>Edit</button>
-                    </div>
-                    <div className={styles.bottomRowItem}>
-                      <button>Redirect</button>
-                    </div>
-
-                    <div className={styles.bottomRowItem}>
-                      <button>Qr Code</button>
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.clicksData}>
-                  <div className={styles.totalClicksDisplay}>
-                    <div className={styles.totalClicksTitle}>
-                      <span className={styles.totalClicksData}>10</span>
-                      <span className={styles.totalClicksIcon}>icon</span>
-                    </div>
-                    <div className={styles.totalClicksDescription}>
-                      <small>Total Click</small>
-                    </div>
-                  </div>
-                  <div>
-                    <HighchartsReact
-                      highcharts={Highcharts}
-                      options={linkData}
-                    />
-                  </div>
-                </div>
-                <div className={styles.referrerBlock}>
-                  <div className={styles.referrerTitle}>
-                    <h2>Referrer</h2>
-                  </div>
-                  <div>
-                    <HighchartsReact
-                      highcharts={Highcharts}
-                      options={pieChartOptions}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <LinksContainer/>
       </div>
-      <div
-        className={[
-          styles.sideDrawerMain,
-          isSideDrawerOpen ? styles.open : styles.close,
-        ].join(" ")}
-      >
-        <div className={styles.sideOverlay} onClick={onOverlayClicked}></div>
-        <div className={styles.sideDrawer}>
-          <div className={styles.sideDrawerContainer}>
-            <div className={styles.sideDrawerHeader}>
-              <h2>Create Link</h2>
-              <span className={styles.closeIcon} 
-                  onClick={toggleSideDrawerOpen}>x</span>
-            </div>
-
-            <div className={styles.sideDrawerContent}>
-              <div className={styles.input}>
-                <label className={styles.inputLabel}>Enter Long Url</label>
-                <textarea className={styles.inputText} rows="2" maxLength={6144} autoComplete="off"/>
-              </div>
-            </div>
-
-            <div className={styles.sideDrawerBottom}>
-              <div>
-                <button
-                  type="button"
-                  className={styles.createButtonLink}
-                >
-                  create
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SideDrawer
+        sideDrawerOpen={isSideDrawerOpen}
+        onSideDrawerClosed={onSideDrawerClosed}
+      />
     </div>
   );
 }

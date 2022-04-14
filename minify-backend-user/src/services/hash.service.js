@@ -15,7 +15,7 @@ const createHashUrl = async (linkBody, userId) => {
 };
 
 const queryUrls = async (userId, filter, options) => {
-  return MinifyUrlRepository.queryUrls(userId, filter, options);
+  return MinifyUrlRepository.queryUrls(filter, options);
 };
 
 const getUrl = async (minifyId = '', userId) => {
