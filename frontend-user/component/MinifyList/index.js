@@ -1,21 +1,32 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { useEffect } from "react";
 
 import ListItem from "./ListItem";
 
 import styles from "../../styles/component/MinifyList/MinifyList.module.scss";
-import { addMinifyList } from "../../redux/actions";
 import { getMinifyList } from "../../redux/selectors";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addMinifyList } from "../../lib/slices/minify";
 
-const index = ({ fetchMinifyList, minifyList, onMinifyListItemClicked }) => {
-  const {
-    requestState,
-    data,
-    error,
-  } = minifyList;
+const index = ({ onMinifyListItemClicked }) => {
+  const dispatch = useDispatch()
+
+  const minifyList = useSelector((state)=>getMinifyList(state));
+
+  const { requestState, data, error } = minifyList;
+
   useEffect(() => {
-    fetchMinifyList();
-  }, []);
+    console.log(requestState, data, error);
+    let myTimeout;
+    if (requestState == "loading"){ 
+      myTimeout = setTimeout(() => {
+        dispatch(addMinifyList())
+      }, 1000);
+    };
+    return ()=>{
+      if(myTimeout)
+        clearTimeout(myTimeout);
+    }
+  }, [dispatch, requestState]);
 
   return (
     <div className={styles.linksList}>
@@ -35,16 +46,4 @@ const index = ({ fetchMinifyList, minifyList, onMinifyListItemClicked }) => {
   );
 };
 
-function mapStateToProps(state, _ownProps) {
-  return {
-    minifyList: getMinifyList(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchMinifyList: () => dispatch(addMinifyList()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+export default index;

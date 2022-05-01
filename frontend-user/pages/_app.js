@@ -1,14 +1,11 @@
-import { Provider } from 'react-redux'
-import { useStore } from '../redux/store'
-import '../styles/globals.scss'
+import { Provider } from "react-redux";
+import { wrapper, store } from "../lib/store";
+import "../styles/globals.scss";
 
-function MyApp({ Component, pageProps }) {
-  const store = useStore(pageProps.initialReduxState)
+const MyApp = ({ Component, pageProps }) => {
   return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
-  )
+    <Component {...pageProps} />
+  );
 }
 
-export default MyApp
+export default wrapper.withRedux(MyApp);

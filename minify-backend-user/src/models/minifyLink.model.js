@@ -46,7 +46,8 @@ linkSchema.statics.isMinifyIdTaken = async function (minifyId) {
 };
 
 linkSchema.statics.getLink = async function (minifyId, userId) {
-  return this.findOne({ minifyId, userId });
+  const link = await this.findOne({ minifyId, userId });
+  return link
 };
 
 /**

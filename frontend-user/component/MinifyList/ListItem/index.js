@@ -1,4 +1,6 @@
 import React from 'react';
+import { REDIRECT_SERVICE_URL } from '../../../lib/config/config';
+import getRedirectUrl from '../../../lib/utility/getRedirectUrl';
 import styles from "../../../styles/component/MinifyList/ListItem.module.scss";
 
 function index({minifyId, originalLink, creationTime, onMinifyListItemClicked}) {
@@ -38,10 +40,11 @@ function index({minifyId, originalLink, creationTime, onMinifyListItemClicked}) 
           </div>
           <div className={styles.bottomLineData}>
             <a
-              href={`https://bit.ly/${minifyId}`}
+              href={getRedirectUrl(minifyId)}
               className={styles.shortLink}
+              target="_blank"
             >
-              bit.ly/<b>{minifyId}</b>
+              {REDIRECT_SERVICE_URL}/<b>{minifyId}</b>
             </a>
           </div>
         </div>

@@ -1,16 +1,13 @@
 import React, { memo, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { LOADED } from "../../constants";
-import { postCreateMinifyLink } from "../../redux/actions";
+import { postCreateMinifyLink } from "../../lib/slices/minify";
 import { createMinifyStatus } from "../../redux/selectors";
 import styles from "../../styles/Home.module.scss";
 
-const index = ({
-  createMinifyLink,
-  createMinifyState,
-  sideDrawerOpen,
-  onSideDrawerClosed,
-}) => {
+const index = ({ sideDrawerOpen, onSideDrawerClosed }) => {
+  const dispatch = useDispatch();
+  const createMinifyState = useSelector((state) => createMinifyStatus(state));
   const { requestState, error } = createMinifyState;
   const [isSideDrawerOpen, changeSideDrawerOpen] = useState(sideDrawerOpen);
   const [textValue, textValueChange] = useState("");
@@ -29,7 +26,7 @@ const index = ({
   };
 
   const onClickedOnCreateButton = () => {
-    createMinifyLink(textValue);
+    dispatch(postCreateMinifyLink(textValue));
   };
 
   useEffect(() => {
@@ -98,16 +95,4 @@ const index = ({
   );
 };
 
-const mapStatesToProps = (state, _ownProps) => {
-  return {
-    createMinifyState: createMinifyStatus(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    createMinifyLink: (textValue) => dispatch(postCreateMinifyLink(textValue)),
-  };
-};
-
-export default memo(connect(mapStatesToProps, mapDispatchToProps)(index));
+export default memo(index);

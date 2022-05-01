@@ -1,5 +1,14 @@
-const getMinifyList = (store) => store.minifyList;
-const createMinifyStatus = (store) => store.createMinify;
-const getMinifyDetail = (store) => store.minifyDetail;
+const getMinifyList = (store) => {
+  const { minifyReducer } = store;
+  return minifyReducer.minifyList;
+};
+const createMinifyStatus = (store) => {
+  const { minifyReducer } = store;
+  return minifyReducer.createMinify;
+};
+const getMinifyDetail = (store) => {
+  const { minifyReducer } = store;
+  return minifyReducer.minifyDetail;
+};
 
 export { getMinifyList, createMinifyStatus, getMinifyDetail };

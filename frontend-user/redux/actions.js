@@ -1,4 +1,4 @@
-import API from "../api";
+import axios from "../lib/axios";
 import * as actionTypes from "./actionTypes";
 
 const setMinifyList = (minifyList) => {
@@ -40,7 +40,7 @@ const errorMinifyLinkDetail = (error) => {
 const postCreateMinifyLink = (textValue = "") => {
   return (dispatch) => {
     dispatch(loadingCreateMinifyLink());
-    API.post("v1/hash/minify", {
+    axios.post("api/hash/createMinifyLink", {
       original_url: textValue,
     })
       .then((response) => {
@@ -59,7 +59,7 @@ const postCreateMinifyLink = (textValue = "") => {
 function addMinifyList() {
   return (dispatch) => {
     dispatch(loadingMinifyList());
-    API.get("v1/hash/queryUrl?sortBy=creationTime")
+    axios.get("api/hash/minifyList")
       .then((response) => {
         const data = response.data;
         const results = data.results;
@@ -75,7 +75,7 @@ function addMinifyList() {
 function fetchMinifyDetail(minifyId = "") {
   return (dispatch) => {
     dispatch(loadingMinifyLinkDetail());
-    API.get(`v1/hash/${minifyId}`)
+    axios.get(`api/hash/${minifyId}`)
       .then((response) => {
         const data = response.data;
         dispatch(fetchMinifyLinkDetail(data));

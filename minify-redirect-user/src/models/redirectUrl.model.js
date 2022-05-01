@@ -4,17 +4,22 @@ const config = require('../config/config');
 const awsConfig = config.aws;
 const { region } = awsConfig.dynamodb;
 
-const endpoint = region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
+let extraConfig = {
+  region,
+};
+
+if (region === 'local-env' || config.env === 'development' || config.env === 'test') {
+  // noinspection HttpUrlsUsage : Because it is for testing and development environment only
+  const endpoint = region === 'local-env' ? `http://${awsConfig.dynamodb.endpoint}` : `${awsConfig.dynamodb.endpoint}`;
+  extraConfig = {
+    endpoint,
+  };
+}
 
 AWS.config.update({
   region,
+  ...extraConfig,
 });
-
-if (region === 'local-env' || config.env === 'development' || config.env === 'test') {
-  AWS.config.update({
-    endpoint,
-  });
-}
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
@@ -24,9 +29,9 @@ const getOriginalUrl = async (minify_id = '') => {
   const params = {
     TableName: table,
     Key: {
-      hash: minify_id,
+      minifyId: minify_id,
     },
-    AttributesToGet: ['originalLink', 'expirationTime'],
+    AttributesToGet: ['originalLink', 'expirationTime', 'userId'],
   };
   return docClient.get(params).promise();
 };

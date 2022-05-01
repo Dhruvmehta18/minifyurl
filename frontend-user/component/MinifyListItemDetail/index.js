@@ -3,12 +3,17 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import styles from "../../styles/Home.module.scss";
 import { getMinifyDetail } from "../../redux/selectors";
-import { fetchMinifyDetail } from "../../redux/actions";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { LOADED } from "../../constants";
+import { fetchMinifyDetail } from "../../lib/slices/minify";
+import getRedirectUrl from "../../lib/utility/getRedirectUrl";
+import { REDIRECT_SERVICE_URL } from "../../lib/config/config";
+import PerformanceChart from "../PerformanceChart";
 
-const index = ({ minifyIdentity, minifyDetail, fetchMinifyIdDetail }) => {
-  const {requestState, data: mininfyData, error} = minifyDetail;
+const index = ({ minifyIdentity }) => {
+  const dispatch = useDispatch();
+  const minifyDetail = useSelector((state) => getMinifyDetail(state));
+  const { requestState, data: mininfyData, error } = minifyDetail;
   const options = {
     chart: {
       type: "column",
@@ -201,19 +206,21 @@ const index = ({ minifyIdentity, minifyDetail, fetchMinifyIdDetail }) => {
   };
   useEffect(() => {
     if (minifyIdentity && minifyIdentity !== "") {
-      fetchMinifyIdDetail(minifyIdentity);
+      dispatch(fetchMinifyDetail(minifyIdentity));
     }
   }, [minifyIdentity]);
   return (
     <div className={styles.linkData}>
-      {minifyIdentity && minifyIdentity !== "" && requestState===LOADED && (
+      {minifyIdentity && minifyIdentity !== "" && requestState === LOADED && (
         <div>
           <div className={styles.mainData}>
             <div className={styles.mainDataTopRow}>
               <time dateTime="2021-10-27">{`CREATED ${mininfyData.creationTime}`}</time>
               <span>
                 <span className={styles.infoWrapper_Divider}>|</span>
-                <span className="item-detail--created-link">{mininfyData.userId}</span>
+                <span className="item-detail--created-link">
+                  {mininfyData.userId}
+                </span>
               </span>
             </div>
             <div className={styles.mainDataSecondRow}>
@@ -230,8 +237,12 @@ const index = ({ minifyIdentity, minifyDetail, fetchMinifyIdDetail }) => {
             </div>
             <div className={styles.mainDataBottomRow}>
               <div className={styles.bottomRowItem}>
-                <a href={`https://bit.ly/${mininfyData.minifyId}`} className={styles.shortLink}>
-                  bit.ly/<b>{mininfyData.minifyId}</b>
+                <a
+                  href={getRedirectUrl(mininfyData.minifyId)}
+                  className={styles.shortLink}
+                  target="_blank"
+                >
+                  {REDIRECT_SERVICE_URL}/<b>{mininfyData.minifyId}</b>
                 </a>
               </div>
               <div className={styles.bottomRowItem}>
@@ -255,18 +266,7 @@ const index = ({ minifyIdentity, minifyDetail, fetchMinifyIdDetail }) => {
             </div>
           </div>
           <div className={styles.clicksData}>
-            <div className={styles.totalClicksDisplay}>
-              <div className={styles.totalClicksTitle}>
-                <span className={styles.totalClicksData}>10</span>
-                <span className={styles.totalClicksIcon}>icon</span>
-              </div>
-              <div className={styles.totalClicksDescription}>
-                <small>Total Click</small>
-              </div>
-            </div>
-            <div>
-              <HighchartsReact highcharts={Highcharts} options={linkData} />
-            </div>
+            <PerformanceChart LeftComponent={LeftClicksData} type="detail" minifyIdentity={minifyIdentity}/>
           </div>
           <div className={styles.referrerBlock}>
             <div className={styles.referrerTitle}>
@@ -285,16 +285,18 @@ const index = ({ minifyIdentity, minifyDetail, fetchMinifyIdDetail }) => {
   );
 };
 
-const mapsStatesToProps = (state, _ownProps) => {
-  return {
-    minifyDetail: getMinifyDetail(state),
-  };
-};
+const LeftClicksData = memo(({totalClicks}) => {
+  return (
+    <div className={styles.totalClicksDisplay}>
+      <div className={styles.totalClicksTitle}>
+        <span className={styles.totalClicksData}>{totalClicks}</span>
+        <span className={styles.totalClicksIcon}>icon</span>
+      </div>
+      <div className={styles.totalClicksDescription}>
+        <small>Total Click</small>
+      </div>
+    </div>
+  );
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchMinifyIdDetail: (minifyId) => dispatch(fetchMinifyDetail(minifyId)),
-  };
-};
-
-export default memo(connect(mapsStatesToProps, mapDispatchToProps)(index));
+export default index;
