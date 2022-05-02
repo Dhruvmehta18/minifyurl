@@ -1,21 +1,23 @@
 import React from 'react';
+import { REDIRECT_SERVICE_URL } from '../../../lib/config/config';
+import getRedirectUrl from '../../../lib/utility/getRedirectUrl';
 import styles from "../../../styles/component/MinifyList/ListItem.module.scss";
 
-function index(props) {
+function index({minifyId, originalLink, creationTime, onMinifyListItemClicked}) {
     return (
-      <div className={styles.linkListItemWrapper}>
+      <div className={styles.linkListItemWrapper} onClick={()=>onMinifyListItemClicked(minifyId)}>
       <div className={styles.linkListItem}>
         <div className={styles.checkboxContainer}>
           <span className={styles.itemCheckbox}>
             <div className="checkbox--SMALL">
               <input
-                id="3wUECjG"
+                id={minifyId}
                 type="checkbox"
                 className="checkbox--input"
               />
               <label
                 tabIndex="0"
-                htmlFor="3wUECjG"
+                htmlFor={minifyId}
                 className="checkmark-icon checkbox-icon"
               ></label>
             </div>
@@ -25,24 +27,24 @@ function index(props) {
           <div className={styles.topLineData}>
             <time
               className={styles.linkCreatedAt}
-              dateTime="2020-02-26"
+              dateTime={creationTime}
             >
-              Feb 16
+              {creationTime}
             </time>
             <div className={styles.iconTags}>tags</div>
           </div>
           <div className={styles.secondLineData}>
             <div className={styles.linkTitle}>
-              Designing a URL Shortening service like TinyURL -
-              Grokking the System Design Interview
+              {originalLink}
             </div>
           </div>
           <div className={styles.bottomLineData}>
             <a
-              href="https://bit.ly/first-35G"
+              href={getRedirectUrl(minifyId)}
               className={styles.shortLink}
+              target="_blank"
             >
-              bit.ly/<b>first-35G</b>
+              {REDIRECT_SERVICE_URL}/<b>{minifyId}</b>
             </a>
           </div>
         </div>

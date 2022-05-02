@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { memo, useState } from "react";
 import styles from "../../styles/component/OrbRadio.module.scss";
 
-function index(props) {
+const index = memo(()=> {
 
   const [onToggle, onToggleChange] = useState(false);
 
@@ -45,6 +45,6 @@ function index(props) {
       </label>
     </div>
   );
-}
+})
 
 export default index;

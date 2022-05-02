@@ -3,7 +3,7 @@ const { addMonths } = require('./dateUtils');
 
 const minifyObjectGenerator = (linkBody) => {
   const { original_url: originalUrl, userId } = linkBody;
-  const now = new Date();
+  const now = new Date(new Date().toUTCString());
   const expirationDate = addMonths(now, 6);
   const hashData = `${originalUrl}${now.getMilliseconds()}`;
   const shortLinkHash = shajs('sha256')

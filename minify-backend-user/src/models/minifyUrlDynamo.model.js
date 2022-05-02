@@ -31,7 +31,7 @@ const createTable = async () => {
 };
 
 const setShortenUrl = async (minifyUrlObj) => {
-  const allowedKeys = ['minifyId', 'link', 'creationTime', 'expirationTime'];
+  const allowedKeys = ['minifyId', 'originalLink', 'creationTime', 'expirationTime', 'userId'];
   const sanitizedMinifyUrlObj = Object.keys(minifyUrlObj)
     .filter((key) => allowedKeys.includes(key))
     .reduce((obj, currKey) => {
