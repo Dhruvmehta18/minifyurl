@@ -3,33 +3,38 @@ const { toJSON } = require('./plugins');
 
 const ObjectId = mongoose.Types.ObjectId;
 
+const SchemaTypes = mongoose.SchemaTypes;
 // noinspection JSValidateTypes
 const telemetrySchema = mongoose.Schema({
   minifyId: {
-    type: String,
+    type: SchemaTypes.String,
     required: true,
     trim: true,
   },
   clickTime: {
-    type: Date,
+    type: SchemaTypes.Date,
     trim: true,
     required: true,
   },
   clickMonth: {
-    type: Number,
+    type: SchemaTypes.Number,
     required: true,
     max: 12,
     min: 1,
   },
   clickYear: {
-    type: Number,
+    type: SchemaTypes.Number,
     required: true,
-    max: 12,
+    max: 10e8,
     min: 2000,
   },
   userId: {
-    type: mongoose.SchemaTypes.ObjectId,
+    type: SchemaTypes.ObjectId,
     ref: 'User',
+    required: true,
+  },
+  referer: {
+    type: SchemaTypes.String,
     required: true,
   },
 });
@@ -50,14 +55,8 @@ const getSanitizedDataObj = (dataObj) => {
   return sanitizedDataObj;
 };
 
-telemetrySchema.statics.getTelemetryDataForMonth = async function (dataObj) {
-  const saniObj = getSanitizedDataObj(dataObj);
-  let matchObj = {
-    ...saniObj,
-    userId: new ObjectId(saniObj.userId),
-  };
-  console.log(matchObj);
-  const telemetryDetail = await this.aggregate([
+const getPerformanceData = async (thisObj, matchObj) => {
+  return await thisObj.aggregate([
     {
       $match: {
         ...matchObj,
@@ -87,7 +86,10 @@ telemetrySchema.statics.getTelemetryDataForMonth = async function (dataObj) {
       },
     },
   ]);
-  const telemetrySummary = await this.aggregate([
+};
+
+const getTotalClicksSummary = async (thisObj, matchObj) => {
+  const data = await thisObj.aggregate([
     {
       $match: {
         ...matchObj,
@@ -96,10 +98,91 @@ telemetrySchema.statics.getTelemetryDataForMonth = async function (dataObj) {
     {
       $count: 'id',
     },
+    {
+      $project: {
+        totalClick: '$id',
+      },
+    },
   ]);
+  return data[0];
+};
+
+const getTotalRefererSummary = async (thisObj, matchObj) => {
+  const data = await thisObj.aggregate([
+    {
+      $match: {
+        ...matchObj,
+      },
+    },
+    {
+      $group: {
+        _id: '$referer',
+      },
+    },
+    {
+      $count: 'id',
+    },
+    {
+      $project: {
+        totalReferer: '$id',
+      },
+    },
+  ]);
+  return data[0];
+};
+
+const getTotalRefererSplitUp = async (thisObj, matchObj, nums) => {
+  return await thisObj.aggregate([
+    {
+      $match: {
+        ...matchObj,
+      },
+    },
+    {
+      $group: {
+        _id: '$referer',
+        refererCountByClicks: {
+          $count: {},
+        },
+      },
+    },
+    {
+      $project: {
+        count: 1,
+        percentage: {
+          $round: [{$multiply: [{ $divide: ['$refererCountByClicks', { $literal: nums }] }, 100]}, 2],
+        },
+      },
+    },
+  ]);
+};
+
+telemetrySchema.statics.getTelemetryDataForMonth = async function (dataObj) {
+  const saniObj = getSanitizedDataObj(dataObj);
+  let matchObj = {
+    ...saniObj,
+    userId: new ObjectId(saniObj.userId),
+  };
+  console.log(matchObj);
+  const performanceDetailPromise = getPerformanceData(this, matchObj);
+  const telemetrySummaryTotalClickPromise = getTotalClicksSummary(this, matchObj);
+  const telemetrySummaryTotalRefererPromise = getTotalRefererSummary(this, matchObj);
+  const [performanceDetail, telemetrySummaryTotalClick, telemetrySummaryTotalReferer] = await Promise.all([
+    performanceDetailPromise,
+    telemetrySummaryTotalClickPromise,
+    telemetrySummaryTotalRefererPromise,
+  ]);
+  let telemetryRefererSplitUp;
+  if (saniObj.minifyId) {
+    telemetryRefererSplitUp = await getTotalRefererSplitUp(this, matchObj, telemetrySummaryTotalClick.totalClick);
+  }
   const telemetryData = {
-    performanceDetail: telemetryDetail,
-    summary: telemetrySummary,
+    performanceDetail: performanceDetail,
+    summary: {
+      ...telemetrySummaryTotalClick,
+      ...telemetrySummaryTotalReferer,
+    },
+    ...(telemetryRefererSplitUp && {telemetryRefererSplitUp})
   };
   return telemetryData;
 };
