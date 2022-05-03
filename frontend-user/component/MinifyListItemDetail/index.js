@@ -12,7 +12,7 @@ import PieChart from "../PieChart";
 const index = ({ minifyIdentity }) => {
   const dispatch = useDispatch();
   const minifyDetail = useSelector((state) => getMinifyDetail(state));
-  const { requestState, data: mininfyData } = minifyDetail;
+  const { requestState, data: minifyData } = minifyDetail;
 
   const [teleRefSplitUp, setTeleRefSplitUp] = useState([]);
 
@@ -34,11 +34,11 @@ const index = ({ minifyIdentity }) => {
         <div>
           <div className={styles.mainData}>
             <div className={styles.mainDataTopRow}>
-              <time dateTime="2021-10-27">{`CREATED ${mininfyData.creationTime}`}</time>
+              <time dateTime="2021-10-27">{`CREATED ${minifyData.creationTime}`}</time>
               <span>
                 <span className={styles.infoWrapper_Divider}>|</span>
                 <span className="item-detail--created-link">
-                  {mininfyData.userId}
+                  {minifyData.userId}
                 </span>
               </span>
             </div>
@@ -47,36 +47,37 @@ const index = ({ minifyIdentity }) => {
               <small>
                 <a
                   className={styles.linkDataOriginalLink}
-                  href={mininfyData.originalLink}
+                  href={minifyData.originalLink}
                   target="_blank"
                 >
-                  {mininfyData.originalLink}
+                  {minifyData.originalLink}
                 </a>
               </small>
             </div>
             <div className={styles.mainDataBottomRow}>
               <div className={styles.bottomRowItem}>
                 <a
-                  href={getRedirectUrl(mininfyData.minifyId)}
+                  href={getRedirectUrl(minifyData.minifyId)}
                   className={styles.shortLink}
                   target="_blank"
                 >
-                  {REDIRECT_SERVICE_URL}/<b>{mininfyData.minifyId}</b>
+                  {REDIRECT_SERVICE_URL}/<b>{minifyData.minifyId}</b>
                 </a>
               </div>
               <div className={styles.bottomRowItem}>
-                <button>Copy</button>
-              </div>
-
-              <div className={styles.bottomRowItem}>
-                <button>Share</button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      getRedirectUrl(minifyData.minifyId)
+                    );
+                  }}
+                >
+                  Copy
+                </button>
               </div>
 
               <div className={styles.bottomRowItem}>
                 <button>Edit</button>
-              </div>
-              <div className={styles.bottomRowItem}>
-                <button>Redirect</button>
               </div>
 
               <div className={styles.bottomRowItem}>
