@@ -1,14 +1,12 @@
 import React, { memo, useEffect, useState } from "react";
 
-import OrbRadio from "../../component/OrdRadio";
-
 import TelemetryTimelineCharts from "../../component/TelemetryTimelineCharts";
 import axiosInstance from "../../lib/axios";
-import styles from "../../styles/Home.module.scss";
 
 const index = memo(({ LeftComponent, type = "detail", ...extraProps }) => {
   const [performanceData, setPerformanceData] = useState([]);
   const [totalClicks, setTotalClicks] = useState(0);
+  const [totalReferer, setTotalReferer] = useState(0);
   useEffect(() => {
     const fetchPerformance = async () => {
       const date = new Date();
@@ -34,7 +32,9 @@ const index = memo(({ LeftComponent, type = "detail", ...extraProps }) => {
       if (response.status === 200) {
         console.log(response.data);
         setPerformanceData([...response.data.performanceDetail]);
-        setTotalClicks(response.data?.summary?.[0]?.id || 0);
+        setTotalClicks(response.data?.summary?.totalClick || 0);
+        setTotalReferer(response.data?.summary?.totalReferer || 0);
+        extraProps.onFetch && extraProps.onFetch(response.data);
       }
     };
     let myTimeout;
@@ -48,7 +48,7 @@ const index = memo(({ LeftComponent, type = "detail", ...extraProps }) => {
 
   return (
     <>
-      <LeftComponent totalClicks={totalClicks} />
+      <LeftComponent totalClicks={totalClicks} totalReferer={totalReferer} />
       <TelemetryTimelineCharts performanceData={performanceData} />
     </>
   );

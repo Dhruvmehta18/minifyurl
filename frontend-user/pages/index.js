@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import dynamic from "next/dynamic";
 
 import SideDrawer from "../component/SideDrawer";
@@ -76,7 +76,7 @@ export const Home = () => {
   );
 };
 
-const leftDataComponent = ({ totalClicks }) => {
+const leftDataComponent = memo(({ totalClicks, totalReferer }) => {
   return (
     <div className={styles.leftPerformanceContainer}>
       <div className={styles.leftPerformanceBottomContainer}>
@@ -85,12 +85,12 @@ const leftDataComponent = ({ totalClicks }) => {
           <div className={styles.totalNumbersLabel}>Total Clicks</div>
         </div>
         <div className={styles.totalNumbersItem}>
-          <div className={styles.totalNumbers}>6</div>
+          <div className={styles.totalNumbers}>{totalReferer}</div>
           <div className={styles.totalNumbersLabel}>Referrers</div>
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default Home;
