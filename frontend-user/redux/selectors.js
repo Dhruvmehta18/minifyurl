@@ -6,9 +6,13 @@ const createMinifyStatus = (store) => {
   const { minifyReducer } = store;
   return minifyReducer.createMinify;
 };
+const updateMinifyStatus = (store) => {
+  const { minifyReducer } = store;
+  return minifyReducer.updateMinify;
+};
 const getMinifyDetail = (store) => {
   const { minifyReducer } = store;
   return minifyReducer.minifyDetail;
 };
 
-export { getMinifyList, createMinifyStatus, getMinifyDetail };
+export { getMinifyList, createMinifyStatus, getMinifyDetail, updateMinifyStatus };

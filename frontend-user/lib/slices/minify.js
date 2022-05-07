@@ -22,8 +22,35 @@ export const postCreateMinifyLink = createAsyncThunk(
       if (response.status === 201) {
         console.log(response);
         return {
-          minifyLink: response.data
-        }
+          minifyLink: response.data,
+        };
+      } else {
+        return thunkAPI.rejectWithValue({ error: "Something went wrong" });
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
+export const postUpdateMinifyLink = createAsyncThunk(
+  "minify/postUpdateMinifyLink",
+  async (parameters, thunkAPI) => {
+    const {original_url, minify_id} = parameters;
+    try {
+      axiosInstance.defaults.headers.Authorization = `Bearer ${localStorage.getItem(
+        "accessToken"
+      )}`;
+
+      const response = await axiosInstance.post("api/hash/updateMinifyLink", {
+        original_url: original_url,
+        minify_id: minify_id,
+      });
+      if (response.status === 200) {
+        console.log(response);
+        return {
+          minifyLink: response.data,
+        };
       } else {
         return thunkAPI.rejectWithValue({ error: "Something went wrong" });
       }
@@ -77,6 +104,10 @@ const internalInitialState = {
     requestState: MinifyLoadStates.LOADING,
     error: null,
   },
+  updateMinify: {
+    requestState: MinifyLoadStates.LOADING,
+    error: null,
+  },
   minifyDetail: {
     requestState: MinifyLoadStates.LOADING,
     data: {},
@@ -111,7 +142,7 @@ export const minifySlice = createSlice({
         ...state.minifyList,
         error: action.payload.error,
       };
-      throw new Error(action.error.message);
+      throw new Error(action.error);
     });
     builder.addCase(postCreateMinifyLink.pending, (state) => {
       state.createMinify = {
@@ -158,6 +189,29 @@ export const minifySlice = createSlice({
       state.minifyDetail = {
         requestState: MinifyLoadStates.LOADING,
         data: {},
+        error: null,
+      };
+    });
+    builder.addCase(postUpdateMinifyLink.fulfilled, (state, action) => {
+      state.updateMinify = {
+        requestState: MinifyLoadStates.LOADED,
+        error: null,
+      };
+      state.minifyDetail = {
+        requestState: MinifyLoadStates.LOADED,
+        data: action.payload.minifyLink,
+        error: null,
+      };
+    });
+    builder.addCase(postUpdateMinifyLink.rejected, (state, action) => {
+      state.updateMinify = {
+        requestState: MinifyLoadStates.ERROR,
+        error: 'Error',
+      };
+    });
+    builder.addCase(postUpdateMinifyLink.pending, (state) => {
+      state.updateMinify = {
+        requestState: MinifyLoadStates.LOADING,
         error: null,
       };
     });

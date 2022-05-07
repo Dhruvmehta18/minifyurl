@@ -7,8 +7,8 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 router.post('/minify', validate(hashValidation.createHashUrl), auth(), hashController.createUrl);
 router.get('/queryUrl', auth(), hashController.queryUrls);
+router.put('/id/update', validate(hashValidation.updateOriginalUrl), auth(), hashController.updateUrl);
+router.delete('/id/delete/', validate(hashValidation.deleteUrl), auth(), hashController.deleteUrl);
 router.get('/:minify_id', validate(hashValidation.getUrl), auth(), hashController.getUrl);
-router.put('/:minify_id/update', validate(hashValidation.updateOriginalUrl), auth(), hashController.updateUrl);
-router.delete('/:minify_id/delete/', validate(hashValidation.deleteUrl), auth(), hashController.deleteUrl);
 
 module.exports = router;

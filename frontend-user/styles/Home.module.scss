@@ -40,7 +40,7 @@
 .sideDrawerMain {
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: -1;
@@ -56,7 +56,7 @@
   .sideDrawer {
     width: $sideDrawerWidth;
     height: inherit;
-    position: absolute;
+    position: fixed;
     top: 0;
     right: ($sideDrawerWidth * -1);
     background: white;
@@ -121,7 +121,6 @@
       flex-direction: column;
       width: 100%;
       border-radius: 0.5rem;
-      
 
       .inputLabel {
         font-size: 1rem;
@@ -154,6 +153,28 @@
     .createButtonLink {
       @extend .createButtonBasic;
       width: 100%;
+    }
+  }
+}
+
+.qrcodeContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+  .qrcodeWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    .qrcodeElementWrapper {
+    padding: 24px;
+      background-color: #ffffff;
     }
   }
 }

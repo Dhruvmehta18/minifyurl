@@ -15,14 +15,12 @@ const getUrl = {
 const updateOriginalUrl = {
   body: Joi.object().keys({
     original_url: Joi.string().required().uri(),
-  }),
-  params: Joi.object().keys({
     minify_id: Joi.string().required(),
   }),
 };
 
 const deleteUrl = {
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     minify_id: Joi.string().required(),
   }),
 };
