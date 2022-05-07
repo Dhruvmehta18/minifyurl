@@ -104,7 +104,7 @@ const getTotalClicksSummary = async (thisObj, matchObj) => {
       },
     },
   ]);
-  return data[0];
+  return data && data.length > 0 ? data[0] : { totalClick: 0 };
 };
 
 const getTotalRefererSummary = async (thisObj, matchObj) => {
@@ -128,10 +128,13 @@ const getTotalRefererSummary = async (thisObj, matchObj) => {
       },
     },
   ]);
-  return data[0];
+  return data && data.length > 0 ? data[0] : { totalReferer: 0 };
 };
 
 const getTotalRefererSplitUp = async (thisObj, matchObj, nums) => {
+  if (nums === 0) {
+    return [];
+  }
   return await thisObj.aggregate([
     {
       $match: {
@@ -150,7 +153,7 @@ const getTotalRefererSplitUp = async (thisObj, matchObj, nums) => {
       $project: {
         count: 1,
         percentage: {
-          $round: [{$multiply: [{ $divide: ['$refererCountByClicks', { $literal: nums }] }, 100]}, 2],
+          $round: [{ $multiply: [{ $divide: ['$refererCountByClicks', { $literal: nums }] }, 100] }, 2],
         },
       },
     },
@@ -174,6 +177,7 @@ telemetrySchema.statics.getTelemetryDataForMonth = async function (dataObj) {
   ]);
   let telemetryRefererSplitUp;
   if (saniObj.minifyId) {
+    console.log(telemetrySummaryTotalClick);
     telemetryRefererSplitUp = await getTotalRefererSplitUp(this, matchObj, telemetrySummaryTotalClick.totalClick);
   }
   const telemetryData = {
@@ -182,7 +186,7 @@ telemetrySchema.statics.getTelemetryDataForMonth = async function (dataObj) {
       ...telemetrySummaryTotalClick,
       ...telemetrySummaryTotalReferer,
     },
-    ...(telemetryRefererSplitUp && {telemetryRefererSplitUp})
+    ...(telemetryRefererSplitUp && { telemetryRefererSplitUp }),
   };
   return telemetryData;
 };

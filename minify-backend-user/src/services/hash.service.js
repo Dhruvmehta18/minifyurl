@@ -22,15 +22,15 @@ const getUrl = async (minifyId = '', userId) => {
   return MinifyUrlRepository.getUrl(minifyId, userId);
 };
 
-const updateUrl = async (linkParams, linkBody, userId) => {
-  const { minify_id: minifyId } = linkParams;
+const updateUrl = async (linkBody, userId) => {
+  const { minify_id: minifyId , original_url: originalLink} = linkBody;
 
   const link = await MinifyUrlRepository.getUrl(minifyId, userId);
   if (!link) {
     throw new ApiError(httpStatus.NOT_FOUND, 'link not found');
   }
 
-  return MinifyUrlRepository.updateOriginalUrl(link, linkBody);
+  return MinifyUrlRepository.updateOriginalUrl(link, {originalLink});
 };
 
 const deleteUrl = async (linkParams, userId) => {

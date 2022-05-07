@@ -10,6 +10,7 @@ import { REDIRECT_SERVICE_URL } from "../../lib/config/config";
 import PerformanceChart from "../PerformanceChart";
 import PieChart from "../PieChart";
 import useToggle from "../../hooks/useToggle";
+import UpdateLinkDrawer from "../UpdateLinkDrawer";
 
 const index = ({ minifyIdentity }) => {
   const dispatch = useDispatch();
@@ -18,16 +19,24 @@ const index = ({ minifyIdentity }) => {
 
   const [teleRefSplitUp, setTeleRefSplitUp] = useState([]);
   const [isQrcodeDisplay, toggleIsQrCodeDisplay] = useToggle();
+  const [isSideDrawerOpen, changeSideDrawerOpen] = useState(false);
+
+  const onSideDrawerClosed = () => {
+    changeSideDrawerOpen(false);
+  };
 
   const onPerformanceDataFetch = (data) => {
     const { telemetryRefererSplitUp } = data;
-    console.log(telemetryRefererSplitUp);
     setTeleRefSplitUp([...telemetryRefererSplitUp]);
   };
 
-  const onQrButtonClicked = useCallback(()=>{
+  const onQrButtonClicked = useCallback(() => {
     toggleIsQrCodeDisplay();
   }, [isQrcodeDisplay]);
+
+  const onEditButtonClicked = () => {
+    changeSideDrawerOpen(true);
+  };
 
   useEffect(() => {
     if (minifyIdentity && minifyIdentity !== "") {
@@ -97,7 +106,7 @@ const index = ({ minifyIdentity }) => {
                 </div>
 
                 <div className={styles.bottomRowItem}>
-                  <button>Edit</button>
+                  <button onClick={onEditButtonClicked}>Edit</button>
                 </div>
 
                 <div className={styles.bottomRowItem}>
@@ -113,15 +122,22 @@ const index = ({ minifyIdentity }) => {
                 onFetch={onPerformanceDataFetch}
               />
             </div>
-            <div className={styles.referrerBlock}>
-              <div className={styles.referrerTitle}>
-                <h2>Referrer</h2>
+            {teleRefSplitUp && teleRefSplitUp.length > 0 && (
+              <div className={styles.referrerBlock}>
+                <div className={styles.referrerTitle}>
+                  <h2>Referrer</h2>
+                </div>
+                <div>
+                  <PieChart data={teleRefSplitUp} />
+                </div>
               </div>
-              <div>
-                <PieChart data={teleRefSplitUp} />
-              </div>
-            </div>
+            )}
           </div>
+          <UpdateLinkDrawer
+            sideDrawerOpen={isSideDrawerOpen}
+            onSideDrawerClosed={onSideDrawerClosed}
+            minifyIdentity={minifyIdentity}
+          />
         </>
       )}
     </div>

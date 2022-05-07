@@ -40,7 +40,7 @@
 .sideDrawerMain {
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: -1;
@@ -56,7 +56,7 @@
   .sideDrawer {
     width: $sideDrawerWidth;
     height: inherit;
-    position: absolute;
+    position: fixed;
     top: 0;
     right: ($sideDrawerWidth * -1);
     background: white;

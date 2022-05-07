@@ -15,7 +15,7 @@ const createUrl = catchAsync(async (req, res) => {
 });
 
 const queryUrls = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['userId']);
+  const filter = pick(req, ['userId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await hashService.queryUrls(req.userId, filter, options);
   if (result === undefined || result === null) {
@@ -38,11 +38,11 @@ const getUrl = catchAsync(async (req, res) => {
 });
 
 const updateUrl = catchAsync(async (req, res) => {
-  const updateUrlResponse = await hashService.updateOriginalUrl(req.params, req.body, req.userId);
+  const updateUrlResponse = await hashService.updateUrl(req.body, req.userId);
   if (updateUrlResponse === undefined || updateUrlResponse === null) {
     throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
   } else {
-    res.status(httpStatus.NO_CONTENT).send();
+    res.status(httpStatus.OK).send(updateUrlResponse);
   }
 });
 

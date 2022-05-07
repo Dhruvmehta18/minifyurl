@@ -8,6 +8,7 @@ import LinksContainer from "../component/LinksContainer";
 import PerformanceChart from "../component/PerformanceChart";
 import OrdRadio from "../component/OrdRadio";
 import styles from "../styles/Home.module.scss";
+import CreateLinkDrawer from "../component/CreateLinkDrawer";
 
 // Dynamicaly import the AuthGuard component.
 const AuthGuard = dynamic(() =>
@@ -67,7 +68,7 @@ export const Home = () => {
           </div>
           <LinksContainer />
         </div>
-        <SideDrawer
+        <CreateLinkDrawer
           sideDrawerOpen={isSideDrawerOpen}
           onSideDrawerClosed={onSideDrawerClosed}
         />
