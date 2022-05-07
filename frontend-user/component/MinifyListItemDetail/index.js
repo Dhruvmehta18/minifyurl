@@ -11,9 +11,12 @@ import PerformanceChart from "../PerformanceChart";
 import PieChart from "../PieChart";
 import useToggle from "../../hooks/useToggle";
 import UpdateLinkDrawer from "../UpdateLinkDrawer";
+import { getFormatedDateForDetail } from "../MinifyList/ListItem/list-item.util";
 
 const index = ({ minifyIdentity }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
+  const { me } = useSelector((state) => state.authReducer);
+  const {name} = me;
   const minifyDetail = useSelector((state) => getMinifyDetail(state));
   const { requestState, data: minifyData } = minifyDetail;
 
@@ -63,11 +66,13 @@ const index = ({ minifyIdentity }) => {
           <div>
             <div className={styles.mainData}>
               <div className={styles.mainDataTopRow}>
-                <time dateTime="2021-10-27">{`CREATED ${minifyData.creationTime}`}</time>
+                <time
+                  dateTime={getFormatedDateForDetail(minifyData.creationTime)}
+                >{`${getFormatedDateForDetail(minifyData.creationTime)}`}</time>
                 <span>
                   <span className={styles.infoWrapper_Divider}>|</span>
                   <span className="item-detail--created-link">
-                    {minifyData.userId}
+                    {name}
                   </span>
                 </span>
               </div>

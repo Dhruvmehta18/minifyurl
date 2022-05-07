@@ -1,11 +1,20 @@
-import React from 'react';
-import { REDIRECT_SERVICE_URL } from '../../../lib/config/config';
-import getRedirectUrl from '../../../lib/utility/getRedirectUrl';
+import React from "react";
+import { REDIRECT_SERVICE_URL } from "../../../lib/config/config";
+import getRedirectUrl from "../../../lib/utility/getRedirectUrl";
 import styles from "../../../styles/component/MinifyList/ListItem.module.scss";
+import { getFormatedDateForList } from "./list-item.util";
 
-function index({minifyId, originalLink, creationTime, onMinifyListItemClicked}) {
-    return (
-      <div className={styles.linkListItemWrapper} onClick={()=>onMinifyListItemClicked(minifyId)}>
+function index({
+  minifyId,
+  originalLink,
+  creationTime,
+  onMinifyListItemClicked,
+}) {
+  return (
+    <div
+      className={styles.linkListItemWrapper}
+      onClick={() => onMinifyListItemClicked(minifyId)}
+    >
       <div className={styles.linkListItem}>
         <div className={styles.checkboxContainer}>
           <span className={styles.itemCheckbox}>
@@ -27,16 +36,13 @@ function index({minifyId, originalLink, creationTime, onMinifyListItemClicked}) 
           <div className={styles.topLineData}>
             <time
               className={styles.linkCreatedAt}
-              dateTime={creationTime}
+              dateTime={getFormatedDateForList(creationTime)}
             >
-              {creationTime}
+              {getFormatedDateForList(creationTime)}
             </time>
-            <div className={styles.iconTags}>tags</div>
           </div>
           <div className={styles.secondLineData}>
-            <div className={styles.linkTitle}>
-              {originalLink}
-            </div>
+            <div className={styles.linkTitle}>{originalLink}</div>
           </div>
           <div className={styles.bottomLineData}>
             <a
@@ -50,7 +56,7 @@ function index({minifyId, originalLink, creationTime, onMinifyListItemClicked}) 
         </div>
       </div>
     </div>
-    );
+  );
 }
 
 export default index;

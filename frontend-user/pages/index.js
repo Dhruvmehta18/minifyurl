@@ -60,7 +60,7 @@ export const Home = () => {
           </nav>
           <div className={styles.primaryLayoutWrapper}>
             <div className={styles.performanceChartWrapper}>
-              <OrdRadio />
+              {/* <OrdRadio /> */}
               <div className={styles.primaryLayoutBottomWrapper}>
                 <PerformanceChart LeftComponent={leftDataComponent}  type="all"/>
               </div>
