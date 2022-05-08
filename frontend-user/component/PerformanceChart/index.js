@@ -23,7 +23,7 @@ const index = memo(({ LeftComponent, type = "detail", ...extraProps }) => {
       const queryString = Object.keys(params)
         .map((key) => `${key}=${params[key]}`)
         .join("&");
-      axiosInstance.defaults.headers.Authorization = `Bearer ${localStorage.getItem(
+      axiosInstance.defaults.headers.Authorization = `Bearer ${sessionStorage.getItem(
         "accessToken"
       )}`;
       const response = await axiosInstance.get(

@@ -12,7 +12,7 @@ export const postCreateMinifyLink = createAsyncThunk(
   "minify/postCreateMinifyLink",
   async (textValue = "", thunkAPI) => {
     try {
-      axiosInstance.defaults.headers.Authorization = `Bearer ${localStorage.getItem(
+      axiosInstance.defaults.headers.Authorization = `Bearer ${sessionStorage.getItem(
         "accessToken"
       )}`;
 
@@ -37,7 +37,7 @@ export const postUpdateMinifyLink = createAsyncThunk(
   async (parameters, thunkAPI) => {
     const { original_url, minify_id, title } = parameters;
     try {
-      axiosInstance.defaults.headers.Authorization = `Bearer ${localStorage.getItem(
+      axiosInstance.defaults.headers.Authorization = `Bearer ${sessionStorage.getItem(
         "accessToken"
       )}`;
 
@@ -63,7 +63,7 @@ export const addMinifyList = createAsyncThunk(
   "minify/addMinifyList",
   async (_a, thunkAPI) => {
     try {
-      axiosInstance.defaults.headers.Authorization = `Bearer ${localStorage.getItem(
+      axiosInstance.defaults.headers.Authorization = `Bearer ${sessionStorage.getItem(
         "accessToken"
       )}`;
       const response = await axiosInstance.get("api/hash/minifyList");
@@ -79,7 +79,7 @@ export const fetchMinifyDetail = createAsyncThunk(
   "minify/fetchMinifyDetail",
   async (minifyId = "", thunkAPI) => {
     try {
-      axiosInstance.defaults.headers.Authorization = `Bearer ${localStorage.getItem(
+      axiosInstance.defaults.headers.Authorization = `Bearer ${sessionStorage.getItem(
         "accessToken"
       )}`;
 

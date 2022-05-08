@@ -7,6 +7,7 @@ import FormWithLabel from "../component/FormWithLabel";
 import InputWithError from "../component/InputWithError";
 import styles from "../styles/Login.module.scss";
 import { register } from "../lib/slices/auth";
+import Head from "next/head";
 
 const registerSchema = yup.object({
   name: yup.string().required(),

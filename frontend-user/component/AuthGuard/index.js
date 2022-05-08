@@ -19,8 +19,8 @@ export const AuthGuard = ({ children, redirectTo }) => {
       const isAccessTokenEmpty =
         accessTokenState === null || accessTokenState === "";
       if (isAccessTokenEmpty) {
-        if (localStorage.getItem("accessToken")) {
-          setAccessTokenState(localStorage.getItem("accessToken"));
+        if (sessionStorage.getItem("accessToken")) {
+          setAccessTokenState(sessionStorage.getItem("accessToken"));
         } else {
           setTimeout(() => {
             router.push(redirectTo || "/login");
@@ -32,8 +32,8 @@ export const AuthGuard = ({ children, redirectTo }) => {
     } else {
       dispatch(fetchUser());
       axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      sessionStorage.setItem("accessToken", accessToken);
+      sessionStorage.setItem("refreshToken", refreshToken);
     }
   }, [loading, me, accessToken, refreshToken, tryFetchUser, fetchUserCount]);
   // Loading indicator
