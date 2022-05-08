@@ -1,5 +1,5 @@
-const passport = require('passport');
 const httpStatus = require('http-status');
+const passport = require('passport');
 const ApiError = require('../utils/ApiError');
 const { roleRights } = require('../config/roles');
 
@@ -8,6 +8,7 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
   req.user = user;
+  req.userId = user.id;
 
   if (requiredRights.length) {
     const userRights = roleRights.get(user.role);

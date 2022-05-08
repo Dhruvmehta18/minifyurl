@@ -1,0 +1,386 @@
+@import "./global_imports";
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: $backgroundColor;
+}
+
+.code {
+  background: #fafafa;
+  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.createButtonBasic {
+  padding: 1rem;
+  border-radius: 2rem;
+  background-color: $primary-color;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  &:hover {
+    background-color: darken($color: $primary-color, $amount: 5);
+  }
+
+  &:active {
+    background-color: darken($color: $primary-color, $amount: 10);
+  }
+}
+
+.sideDrawerMain {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+  .sideOverlay {
+    background-color: rgba($color: #000000, $alpha: 0);
+    width: inherit;
+    height: inherit;
+    z-index: inherit;
+    transition: all 0.2s ease-out;
+  }
+
+  .sideDrawer {
+    width: $sideDrawerWidth;
+    height: inherit;
+    position: fixed;
+    top: 0;
+    right: ($sideDrawerWidth * -1);
+    background: white;
+    z-index: ($sideDrawerZindex + 1);
+    transition: all 0.2s ease-out;
+  }
+
+  &.open {
+    z-index: $sideDrawerZindex;
+    .sideOverlay {
+      background-color: rgba($color: #000000, $alpha: 0.4);
+    }
+
+    .sideDrawer {
+      right: 0;
+    }
+  }
+
+  &.close {
+    z-index: -1;
+    .sideOverlay {
+      background-color: rgba($color: #000000, $alpha: 0);
+    }
+
+    .sideDrawer {
+      right: ($sideDrawerWidth * -1);
+    }
+  }
+}
+
+.sideDrawerContainer {
+  display: inline-flex;
+  flex-direction: column;
+  width: inherit;
+  height: inherit;
+  padding: 0;
+  margin: 0;
+
+  .sideDrawerHeader {
+    width: inherit;
+    padding: 0 1rem;
+    background-color: $primaryLayoutColor;
+    color: white;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .closeIcon {
+      font-size: 3rem;
+      cursor: pointer;
+    }
+  }
+
+  .sideDrawerContent {
+    padding: 1rem;
+    width: inherit;
+    flex: 1;
+
+    .input {
+      border: 1px solid $primary-color;
+      display: inline-flex;
+      flex-direction: column;
+      width: 100%;
+      border-radius: 0.5rem;
+      margin-bottom: 16px;
+
+      .inputLabel {
+        font-size: 1rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        padding: 0.5rem 0.5rem 0 0.5rem;
+      }
+
+      textarea {
+        overflow: hidden;
+        border: none;
+        background-color: transparent;
+        height: 4rem;
+        font-size: 1.5rem;
+        padding: 0 0 1rem 0.5rem;
+        margin: 0;
+        max-width: 100%;
+        min-width: 100%;
+        color: #3a3b3d;
+      }
+
+      input {
+        outline: 0;
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+
+  .sideDrawerBottom {
+    align-self: bottom;
+    padding: 1rem;
+    border-top: $simpleBorderLine;
+
+    .createButtonLink {
+      @extend .createButtonBasic;
+      width: 100%;
+    }
+  }
+}
+
+.qrcodeContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+  .qrcodeWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    .qrcodeElementWrapper {
+      padding: 24px;
+      background-color: #ffffff;
+    }
+  }
+}
+
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+
+  .navigation {
+    color: #ffffff;
+    background-color: darken($color: $backgroundColor, $amount: 10);
+    font-size: 2rem;
+    padding: 1.2rem;
+
+    .navigationWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .navItem:nth-child(n) {
+        margin-right: 1rem;
+      }
+
+      .brandContainer {
+        .minifyBrand {
+          font-size: 3.2rem;
+          font-weight: 900;
+          letter-spacing: 0.25rem;
+        }
+      }
+
+      .createButtonContainer {
+        button.createButton {
+          @extend .createButtonBasic;
+        }
+      }
+    }
+  }
+
+  .primaryLayoutWrapper {
+    background-color: $primaryLayoutColor;
+    position: relative;
+    padding: 1.5rem 3rem 0;
+
+    .performanceChartWrapper {
+      max-height: 25rem;
+      height: 25rem;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+
+      .primaryLayoutBottomWrapper {
+        display: flex;
+        width: inherit;
+      }
+    }
+
+    .performaceChartContainer {
+      overflow: visible;
+      width: calc(100% - 20rem);
+      float: right;
+    }
+
+    .leftPerformanceContainer {
+      display: flex;
+      flex-direction: row;
+      width: 20rem;
+
+      .leftPerformanceBottomContainer {
+        margin: 2rem 2rem 2rem 0;
+        color: #fff;
+
+        .totalNumbersItem {
+          padding: 0.4rem 0;
+          .totalNumbers {
+            font-size: 4rem;
+          }
+
+          .totalNumbersLabel {
+            opacity: 0.55;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .linksWrapper {
+    display: flex;
+    flex-flow: row;
+    flex: 1;
+    min-height: 0;
+
+    .linksContainer {
+      display: flex;
+      flex-direction: row;
+      min-height: 0;
+      width: 100%;
+
+      .linkData {
+        flex: 4;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none;
+        padding: 4.5rem;
+        background-color: #fff;
+
+        .mainData {
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 100%;
+          padding: 0;
+          overflow-x: hidden;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          border-bottom: 1px solid rgba(#000000, 20%);
+
+          .mainDataTopRow {
+            font-size: 1.2rem;
+            .infoWrapper_Divider {
+              font-weight: bold;
+              font-size: 1.4rem;
+              margin: 0 0.5rem;
+            }
+          }
+          .mainDataSecondRow {
+            .linkDataTitle {
+              font-size: 2rem;
+            }
+            a.linkDataOriginalLink {
+              width: inherit;
+              max-width: 100%;
+              display: inline;
+              word-wrap: break-word;
+              font-size: 1.2rem;
+              color: #828387;
+            }
+          }
+
+          .mainDataBottomRow {
+            display: flex;
+            flex-direction: row;
+            padding: 24px 0;
+            align-items: center;
+            .bottomRowItem {
+              margin: 0 16px 0 0;
+              .shortLink {
+                color: $primary-color;
+                font-size: 1rem;
+              }
+              button {
+                border: 1px solid $primary-color;
+                border-radius: 0.8rem;
+                padding: 2px 8px;
+                background-color: white;
+                color: $primary-color;
+                cursor: pointer;
+                transition: all 0.1s;
+                &:hover {
+                  background-color: $primary-color;
+                  color: white;
+                }
+              }
+            }
+          }
+        }
+
+        .clicksData {
+          border-bottom: $simpleBorderLine;
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 100%;
+          padding: 2rem 0;
+          .totalClicksDisplay {
+            .totalClicksTitle {
+              .totalClicksData {
+                font-size: 3rem;
+              }
+            }
+            .totalClicksDescription {
+              font-size: 1.5rem;
+              text-transform: uppercase;
+              font-weight: 600;
+              letter-spacing: 0.1rem;
+              color: lighten($color: #000000, $amount: 30);
+            }
+          }
+        }
+
+        .referrerBlock {
+          .referrerTitle {
+            font-size: 2rem;
+          }
+        }
+      }
+    }
+  }
+}

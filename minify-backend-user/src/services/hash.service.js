@@ -1,33 +1,51 @@
-var shajs = require('sha.js');
-const MinifyUrl = require('../models/minifyUrl.model');
-const logger = require('../config/logger');
-const ApiError = require('../utils/ApiError');
 const httpStatus = require('http-status');
+const MinifyUrlRepository = require('../repository/MinifyUrl.repo');
+const minifyObjectGenerator = require('../utils/randomIdGenerator');
+const ApiError = require('../utils/ApiError');
+const { getTitleAtUrl } = require('../utils/getTitleAtUrl');
 
-const createHashUrl = async (linkBody) => {
-  const original_url = linkBody.original_url;
-  const now = new Date();
-  const hashData = `${original_url}${now.getMilliseconds()}`;
-  const shortLinkHash = shajs('sha256')
-    .update(hashData)
-    .digest('base64')
-    .match(/([a-zA-Z0-9]{7})/)[0];
-  const minifyUrlObj = {
-    hash: shortLinkHash,
-    originalLink: original_url,
-    creationTime: now.toISOString(),
-    expirationTime: now.toISOString(),
-  };
-  const data = await MinifyUrl.setShortenUrl(minifyUrlObj);
-  if (!data) {
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Some error happen on our side');
+const createHashUrl = async (linkBody, userId) => {
+  const title = await getTitleAtUrl(linkBody.original_url);
+  const minifyObject = minifyObjectGenerator({
+    ...linkBody,
+    userId,
+    title
+  });
+  const isTaken = await MinifyUrlRepository.isMinifyIdTaken(minifyObject.minifyId);
+  if (isTaken) {
+    throw new ApiError(httpStatus.CONFLICT, httpStatus['409_MESSAGE']);
   }
-  const hashUrlObj = {
-    ...minifyUrlObj,
-  };
-  return hashUrlObj;
+  return MinifyUrlRepository.setShortenUrl(minifyObject);
+};
+
+const queryUrls = async (userId, filter, options) => {
+  return MinifyUrlRepository.queryUrls(filter, options);
+};
+
+const getUrl = async (minifyId = '', userId) => {
+  return MinifyUrlRepository.getUrl(minifyId, userId);
+};
+
+const updateUrl = async (linkBody, userId) => {
+  const { minify_id: minifyId , original_url: originalLink} = linkBody;
+
+  const link = await MinifyUrlRepository.getUrl(minifyId, userId);
+  if (!link) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'link not found');
+  }
+
+  return MinifyUrlRepository.updateOriginalUrl(link, {originalLink});
+};
+
+const deleteUrl = async (linkParams, userId) => {
+  const { minify_id: minifyId } = linkParams;
+  return MinifyUrlRepository.deleteUrl(minifyId, userId);
 };
 
 module.exports = {
   createHashUrl,
+  getUrl,
+  queryUrls,
+  updateUrl,
+  deleteUrl,
 };

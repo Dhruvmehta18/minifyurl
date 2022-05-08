@@ -1,0 +1,40 @@
+.form{
+    margin: 0 16px;
+}
+.h1 {
+  font-size: 2rem;
+  color: #07001f;
+}
+.para {
+  margin-bottom: 1.7rem;
+}
+.button {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  padding: 8px 0;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  width: 100%;
+  background: tomato;
+  color: #fff;
+  cursor: pointer;
+}
+.button:hover {
+  background: rgba(122, 30, 30, 0.767);
+}
+.or {
+  margin-top: 1.5rem;
+}
+
+.notMemeber {
+  font-size: 1.4rem;
+  margin-top: 1.4rem;
+}
+.notMemeber a {
+  color: tomato;
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}
