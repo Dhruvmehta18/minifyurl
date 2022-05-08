@@ -77,7 +77,7 @@ const index = ({ minifyIdentity }) => {
                 </span>
               </div>
               <div className={styles.mainDataSecondRow}>
-                <h3 className={styles.linkDataTitle}>first</h3>
+                <h3 className={styles.linkDataTitle}>{minifyData.title || minifyData.originalLink}</h3>
                 <small>
                   <a
                     className={styles.linkDataOriginalLink}

@@ -36,7 +36,7 @@ export const postCreateMinifyLink = createAsyncThunk(
 export const postUpdateMinifyLink = createAsyncThunk(
   "minify/postUpdateMinifyLink",
   async (parameters, thunkAPI) => {
-    const {original_url, minify_id} = parameters;
+    const { original_url, minify_id, title } = parameters;
     try {
       axiosInstance.defaults.headers.Authorization = `Bearer ${localStorage.getItem(
         "accessToken"
@@ -45,6 +45,7 @@ export const postUpdateMinifyLink = createAsyncThunk(
       const response = await axiosInstance.post("api/hash/updateMinifyLink", {
         original_url: original_url,
         minify_id: minify_id,
+        title: title,
       });
       if (response.status === 200) {
         console.log(response);
@@ -206,7 +207,7 @@ export const minifySlice = createSlice({
     builder.addCase(postUpdateMinifyLink.rejected, (state, action) => {
       state.updateMinify = {
         requestState: MinifyLoadStates.ERROR,
-        error: 'Error',
+        error: "Error",
       };
     });
     builder.addCase(postUpdateMinifyLink.pending, (state) => {

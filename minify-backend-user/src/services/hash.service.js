@@ -2,15 +2,19 @@ const httpStatus = require('http-status');
 const MinifyUrlRepository = require('../repository/MinifyUrl.repo');
 const minifyObjectGenerator = require('../utils/randomIdGenerator');
 const ApiError = require('../utils/ApiError');
+const { getTitleAtUrl } = require('../utils/getTitleAtUrl');
 
 const createHashUrl = async (linkBody, userId) => {
-  if (await MinifyUrlRepository.isMinifyIdTaken(linkBody.minifyId)) {
-    throw new ApiError(httpStatus.CONFLICT, httpStatus['409_MESSAGE']);
-  }
+  const title = await getTitleAtUrl(linkBody.original_url);
   const minifyObject = minifyObjectGenerator({
     ...linkBody,
     userId,
+    title
   });
+  const isTaken = await MinifyUrlRepository.isMinifyIdTaken(minifyObject.minifyId);
+  if (isTaken) {
+    throw new ApiError(httpStatus.CONFLICT, httpStatus['409_MESSAGE']);
+  }
   return MinifyUrlRepository.setShortenUrl(minifyObject);
 };
 

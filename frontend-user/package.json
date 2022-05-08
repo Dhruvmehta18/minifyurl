@@ -15,7 +15,6 @@
     "dateformat": "^5.0.3",
     "dotenv": "^16.0.0",
     "formik": "^2.2.9",
-    "get-title-at-url": "^1.1.8",
     "highcharts": "^10.0.0",
     "highcharts-react-official": "^3.1.0",
     "joi": "^17.6.0",
