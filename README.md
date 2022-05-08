@@ -18,3 +18,6 @@ dockerfiles is not updated properly. sorry for that
 
 Preview images
 
+![Preview image 1](/preview-1.png)
+![Preview image 2](/preview-2.png)
+![Preview image 3](/preview-3.png)
