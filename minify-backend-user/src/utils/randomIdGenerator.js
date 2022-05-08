@@ -1,11 +1,12 @@
 const shajs = require('sha.js');
 const { addMonths } = require('./dateUtils');
+const crypto = require('crypto');
 
 const minifyObjectGenerator = (linkBody) => {
-  const { original_url: originalUrl, userId } = linkBody;
+  const { original_url: originalUrl, userId, title } = linkBody;
   const now = new Date(new Date().toUTCString());
   const expirationDate = addMonths(now, 6);
-  const hashData = `${originalUrl}${now.getMilliseconds()}`;
+  const hashData = `${now.toUTCString()}${crypto.randomBytes(8).toString()}${originalUrl}`;
   const shortLinkHash = shajs('sha256')
     .update(hashData)
     .digest('base64')
@@ -16,6 +17,7 @@ const minifyObjectGenerator = (linkBody) => {
     creationTime: now.toISOString(),
     expirationTime: expirationDate.toISOString(),
     userId,
+    title,
   };
 };
 

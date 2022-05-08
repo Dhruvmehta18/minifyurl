@@ -28,7 +28,7 @@ const queryUrls = catchAsync(async (req, res) => {
 
 const getUrl = catchAsync(async (req, res) => {
   const data = await hashService.getUrl(req.params.minify_id, req.userId);
-    console.log(data);
+  console.log(data);
   if (data === undefined || data === null) {
     throw new ApiError(httpStatus.NOT_FOUND, httpStatus['404_MESSAGE']);
   } else {

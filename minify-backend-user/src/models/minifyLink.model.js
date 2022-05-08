@@ -9,6 +9,10 @@ const linkSchema = mongoose.Schema({
     trim: true,
     unique: true,
   },
+  title: {
+    type: String,
+    trim: true,
+  },
   originalLink: {
     type: String,
     trim: true,
@@ -47,7 +51,7 @@ linkSchema.statics.isMinifyIdTaken = async function (minifyId) {
 
 linkSchema.statics.getLink = async function (minifyId, userId) {
   const link = await this.findOne({ minifyId, userId });
-  return link
+  return link;
 };
 
 /**
