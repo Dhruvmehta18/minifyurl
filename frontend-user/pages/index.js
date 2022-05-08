@@ -30,7 +30,7 @@ export const Home = () => {
     <AuthGuard>
       <div className={styles.container}>
         <Head>
-          <title>Create Next App</title>
+          <title>Minify</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div className={styles.dashboardContainer}>

@@ -6,7 +6,8 @@ import { useRouter } from "next/dist/client/router";
 import FormWithLabel from "../component/FormWithLabel";
 import InputWithError from "../component/InputWithError";
 import styles from "../styles/Login.module.scss";
-import {login} from '../lib/slices/auth'
+import { login } from "../lib/slices/auth";
+import Head from "next/head";
 
 const loginSchema = yup.object({
   email: yup.string().email("Provide correct e-mail").required("Required"),
@@ -31,6 +32,9 @@ const loginPage = () => {
   });
   return (
     <div>
+      <Head>
+        <title>Minify | Login</title>
+      </Head>
       <div className={styles.wrapper}>
         <FormWithLabel
           onSubmit={formik.handleSubmit}
