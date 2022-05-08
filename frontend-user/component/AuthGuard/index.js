@@ -11,23 +11,26 @@ export const AuthGuard = ({ children, redirectTo }) => {
   const { loading, me, fetchUserCount, accessToken, refreshToken } =
     useSelector((state) => state.authReducer);
 
-  const [accessTokenState, setAccessTokenState] = useState(accessToken)
+  const [accessTokenState, setAccessTokenState] = useState(accessToken);
   const [tryFetchUser, setTryFetchUser] = useState(fetchUserCount);
 
   useEffect(() => {
-    console.log(accessTokenState, fetchUserCount, tryFetchUser);
-    if (loading !== "loading" && me == null) {
-      const isAccessTokenEmpty = accessTokenState == null || accessTokenState == "";
-      if(isAccessTokenEmpty){
-        setAccessTokenState(localStorage.getItem("accessToken"));
-      }
-      if ( !isAccessTokenEmpty && tryFetchUser == fetchUserCount
-      ) {
+    if (!accessTokenState && loading !== "loading" && me == null) {
+      const isAccessTokenEmpty =
+        accessTokenState === null || accessTokenState === "";
+      if (isAccessTokenEmpty) {
+        if (localStorage.getItem("accessToken")) {
+          setAccessTokenState(localStorage.getItem("accessToken"));
+        } else {
+          setTimeout(() => {
+            router.push(redirectTo || "/login");
+          }, 1200);
+        }
+      } else {
         dispatch(fetchUser());
-        setTryFetchUser(true);
       }
-      if (isAccessTokenEmpty || tryFetchUser < fetchUserCount) router.push(redirectTo || "/login");
     } else {
+      dispatch(fetchUser());
       axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
@@ -38,7 +41,7 @@ export const AuthGuard = ({ children, redirectTo }) => {
     return <></>;
   }
   // Without role allow all authorized users
-  if (me) {
+  if (accessTokenState) {
     return <>{children}</>;
   } else {
     return <></>;

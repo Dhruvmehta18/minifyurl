@@ -54,7 +54,6 @@ const index = ({ sideDrawerOpen, onSideDrawerClosed, minifyIdentity }) => {
   }, [textValue, titleValue, minifyIdentity]);
 
   useEffect(() => {
-    console.log(requestState);
     if (requestState === LOADED) {
       toggleSideDrawerOpen();
     }

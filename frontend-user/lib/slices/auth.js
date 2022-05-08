@@ -9,7 +9,6 @@ export const AuthStates = {
 export const fetchUser = createAsyncThunk("auth/me", async (_, thunkAPI) => {
   try {
     const response = await axiosInstance.get("api/me");
-    console.log(response);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message });
@@ -71,7 +70,6 @@ export const authSlice = createSlice({
   initialState: internalInitialState,
   reducers: {
     updateAccessToken(state, action) {
-      console.log("updateAccessToken", state, action.payload);
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },

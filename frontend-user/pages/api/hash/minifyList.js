@@ -2,8 +2,6 @@ import API from "../../../api";
 
 export default async (req, res) => {
   const { headers, body } = req;
-  console.log("headers->");
-  console.log(headers);
   try {
     const {
       data,

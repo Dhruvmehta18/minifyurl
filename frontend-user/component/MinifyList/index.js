@@ -15,7 +15,6 @@ const index = ({ onMinifyListItemClicked }) => {
   const { requestState, data, error } = minifyList;
 
   useEffect(() => {
-    console.log(requestState, data, error);
     let myTimeout;
     if (requestState == "loading"){ 
       myTimeout = setTimeout(() => {

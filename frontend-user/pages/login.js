@@ -25,7 +25,6 @@ const loginPage = () => {
     validationSchema: loginSchema,
     initialValues,
     onSubmit: async (values) => {
-      console.log(values);
       await dispatch(login(values));
       router.push("/");
     },

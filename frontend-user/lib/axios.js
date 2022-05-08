@@ -12,13 +12,11 @@ const axiosInstance = axios.create({
 // Create axios interceptor
 createAuthRefreshInterceptor(axiosInstance, (failedRequest) => {
   const refreshToken = localStorage.getItem("refreshToken");
-  console.log(refreshToken);
   axiosInstance.post("/api/refreshToken", {refreshToken: refreshToken}).then((resp) => {
     // 1a. Clear old helper cookie used in 'authorize.ts' higher order function.
     if (axiosInstance.defaults.headers.setCookie) {
       delete axiosInstance.defaults.headers.setCookie;
     }
-    console.log(resp);
     const accessToken = resp.data.access.token;
     const refreshToken = resp.data.refresh.token;
     localStorage.setItem('accessToken', accessToken);

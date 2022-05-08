@@ -166,7 +166,6 @@ telemetrySchema.statics.getTelemetryDataForMonth = async function (dataObj) {
     ...saniObj,
     userId: new ObjectId(saniObj.userId),
   };
-  console.log(matchObj);
   const performanceDetailPromise = getPerformanceData(this, matchObj);
   const telemetrySummaryTotalClickPromise = getTotalClicksSummary(this, matchObj);
   const telemetrySummaryTotalRefererPromise = getTotalRefererSummary(this, matchObj);
@@ -177,7 +176,6 @@ telemetrySchema.statics.getTelemetryDataForMonth = async function (dataObj) {
   ]);
   let telemetryRefererSplitUp;
   if (saniObj.minifyId) {
-    console.log(telemetrySummaryTotalClick);
     telemetryRefererSplitUp = await getTotalRefererSplitUp(this, matchObj, telemetrySummaryTotalClick.totalClick);
   }
   const telemetryData = {

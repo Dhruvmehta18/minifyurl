@@ -15,7 +15,6 @@ const index = memo(({ data = [] }) => {
         return op;
       }, {});
     });
-    console.log(final);
     return TelemetryForReferer(final);
   };
   return (

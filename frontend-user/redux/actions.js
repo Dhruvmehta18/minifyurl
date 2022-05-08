@@ -50,7 +50,6 @@ const postCreateMinifyLink = (textValue = "") => {
         }
       })
       .catch((err) => {
-        console.log(err);
         dispatch(errorCreateMinifyLink({ err }));
       });
   };
@@ -66,7 +65,6 @@ function addMinifyList() {
         dispatch(setMinifyList([...results]));
       })
       .catch((error) => {
-        console.log(error);
         errorMinifyList({ error });
       });
   };
@@ -81,7 +79,6 @@ function fetchMinifyDetail(minifyId = "") {
         dispatch(fetchMinifyLinkDetail(data));
       })
       .catch((error) => {
-        console.log(error);
         errorMinifyLinkDetail({ error });
       });
   };

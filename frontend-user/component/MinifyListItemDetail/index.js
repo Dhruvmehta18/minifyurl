@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { QRCodeCanvas } from "qrcode.react";
 import styles from "../../styles/Home.module.scss";
 import { getMinifyDetail } from "../../redux/selectors";
@@ -14,9 +15,8 @@ import UpdateLinkDrawer from "../UpdateLinkDrawer";
 import { getFormatedDateForDetail } from "../MinifyList/ListItem/list-item.util";
 
 const index = ({ minifyIdentity }) => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const { me } = useSelector((state) => state.authReducer);
-  const {name} = me;
   const minifyDetail = useSelector((state) => getMinifyDetail(state));
   const { requestState, data: minifyData } = minifyDetail;
 
@@ -71,13 +71,13 @@ const index = ({ minifyIdentity }) => {
                 >{`${getFormatedDateForDetail(minifyData.creationTime)}`}</time>
                 <span>
                   <span className={styles.infoWrapper_Divider}>|</span>
-                  <span className="item-detail--created-link">
-                    {name}
-                  </span>
+                  <span className="item-detail--created-link">{me?.name}</span>
                 </span>
               </div>
               <div className={styles.mainDataSecondRow}>
-                <h3 className={styles.linkDataTitle}>{minifyData.title || minifyData.originalLink}</h3>
+                <h3 className={styles.linkDataTitle}>
+                  {minifyData.title || minifyData.originalLink}
+                </h3>
                 <small>
                   <a
                     className={styles.linkDataOriginalLink}
@@ -154,7 +154,9 @@ const LeftClicksData = memo(({ totalClicks }) => {
     <div className={styles.totalClicksDisplay}>
       <div className={styles.totalClicksTitle}>
         <span className={styles.totalClicksData}>{totalClicks}</span>
-        <span className={styles.totalClicksIcon}>icon</span>
+        <span className={styles.totalClicksIcon}>
+          <Image src={"/icons/bar-graph.png"} width={16} height={16} />
+        </span>
       </div>
       <div className={styles.totalClicksDescription}>
         <small>Total Click</small>

@@ -30,7 +30,6 @@ const index = memo(({ LeftComponent, type = "detail", ...extraProps }) => {
         `api/telemetry/fetchPerformance?${queryString}`
       );
       if (response.status === 200) {
-        console.log(response.data);
         setPerformanceData([...response.data.performanceDetail]);
         setTotalClicks(response.data?.summary?.totalClick || 0);
         setTotalReferer(response.data?.summary?.totalReferer || 0);

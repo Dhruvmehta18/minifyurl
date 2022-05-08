@@ -20,7 +20,6 @@ export const postCreateMinifyLink = createAsyncThunk(
         original_url: textValue,
       });
       if (response.status === 201) {
-        console.log(response);
         return {
           minifyLink: response.data,
         };
@@ -48,7 +47,6 @@ export const postUpdateMinifyLink = createAsyncThunk(
         title: title,
       });
       if (response.status === 200) {
-        console.log(response);
         return {
           minifyLink: response.data,
         };

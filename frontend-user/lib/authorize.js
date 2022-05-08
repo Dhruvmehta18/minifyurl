@@ -8,7 +8,6 @@ export const authorize = async ( store, context, callback ) => {
   const { req, res } = context;
   const { dispatch } = store; // get dispatch action
   const { accessToken, refreshToken } = store.getState().authReducer; // get accessToken from memory - redux.
-  console.log("accessToken", accessToken, refreshToken);
   if (req) {
     axiosInstance.defaults.headers.cookie = req.headers.cookie || null;
 
@@ -67,7 +66,6 @@ export const authorize = async ( store, context, callback ) => {
 // with our redux store.
 // property "context" contains req, res
 export const user = ({ callback }) =>{
-  console.log("user server");
   return wrapper.getServerSideProps((store) => (context) => {
     const { dispatch } = store;
     // 2. Call our authorize Higher order Function
@@ -75,7 +73,6 @@ export const user = ({ callback }) =>{
       // 3. If we currently don't have our user fetched
       // Then we're not authorized.
       // So try to fetch the user.
-      console.log("props->", props);
       if (!store.getState().authReducer.me)
         await dispatch(fetchUser());
       // 4. return the response from the callback
