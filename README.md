@@ -2,7 +2,7 @@
 A service for creating small urls from large ones
 
 This service is using dynamoDb, mongodb as database, nodejs (express) as backend, and nextjs as frontend
-Dynamodb is used for redirecting url to orginal link. It is used because of its high performance.
+Dynamodb is used for redirecting url to orginal link, is used because of its high performance.
 MongoDB is used for generating content like graphs for clients like the total clicks and its distribution among clicks.
 nextjs is used as frontend because it uses react and having SEO optimization.
 
